@@ -1,0 +1,7 @@
+# package directories
+node_modules
+.vscod
+bundle
+build
+.vscode
+package-lock.json

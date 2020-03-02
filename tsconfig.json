@@ -1,0 +1,19 @@
+{
+    "files": ["src/**/*.ts"],
+    "compilerOptions": {
+        "target": "es5",
+        "lib": ["es6", "dom"],
+        "types": ["reflect-metadata", "node"],
+        "module": "es2015",
+        "moduleResolution": "node",
+        "allowJs": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "esModuleInterop": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "exclude": ["build"],
+    "type": ["core-js"]
+}
