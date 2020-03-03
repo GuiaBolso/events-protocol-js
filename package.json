@@ -1,6 +1,6 @@
 {
   "name": "@guiabolsobr/events-protocol",
-  "version": "1.0.0-3",
+  "version": "1.0.0-5",
   "description": "Manipular chamadas do protocolo de eventos",
   "scripts": {
     "lint": "eslint ./src/**/*.ts",
@@ -23,10 +23,6 @@
   "bugs": {
     "url": "https://github.com/GuiaBolso/events-protocol-js/issues"
   },
-  "files": [
-    "package.json",
-    "build/**/*"
-  ],
   "homepage": "https://github.com/GuiaBolso/events-protocol-js#readme",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
