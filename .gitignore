@@ -5,3 +5,5 @@ bundle
 build
 .vscode
 package-lock.json
+/client
+/utils
