@@ -3,31 +3,31 @@ import { getUUID, getSessionUUID } from "../utils/uuid";
 export const SUCCESS = 2;
 
 export class Event {
-  name: string;
+  name: string = "";
 
-  version: number;
+  version: number = 0;
 
-  payload: any | null;
+  payload: any = "";
 
-  metadata: Metadata | null;
+  metadata: Metadata | null = null;
 
-  auth: Auth | null;
+  auth: Auth | null = null;
 
-  identity: any | undefined | null;
+  identity?: any = null;
 
-  flowId: string;
+  flowId: string = "";
 
-  id: string;
+  id: string = "";
 }
 
 type Auth = {
-  token: string | null;
-  "x-sid": string | null;
-  "x-tid": string | null;
+  token?: string;
+  "x-sid"?: string;
+  "x-tid"?: string;
 };
 type Metadata = {
-  createdAt: Date;
-  origin: string;
+  createdAt?: Date;
+  origin?: string;
 };
 
 type HTTPError = {
@@ -199,15 +199,17 @@ export const handleAuth = (tokenKey: string) => (
 };
 
 export const createEvent = (
-  { name, version, payload, auth, metadata }: Event,
-  config: any,
-  baseConfig: any = {
+  { name, version, payload, auth, metadata, identity, id = getUUID(), flowId = getUUID() }: Event,
+  config: any = {},
+): Event => {
+
+  const baseConfig = {
     uuidResolver: getUUID,
     localUuidResolver: getSessionUUID,
     dateResolver: (): Date => new Date(),
     ...config
   }
-): Event => {
+
   if (!metadata || !metadata.origin || metadata.origin === DEFAULT_ORIGIN) {
     console.info("Your application should use its name as metadata.origin");
   }
@@ -215,8 +217,8 @@ export const createEvent = (
     name,
     version,
     payload,
-    flowId: baseConfig.uuidResolver(),
-    id: baseConfig.uuidResolver(),
+    flowId,
+    id,
     auth: {
       ...auth,
       "x-sid": baseConfig.localUuidResolver(),
@@ -226,7 +228,7 @@ export const createEvent = (
       ...metadata,
       createdAt: baseConfig.dateResolver()
     },
-    identity: {}
+    identity
   };
 };
 
@@ -314,3 +316,5 @@ export const generateFetchEventByName = (
     }),
     isAuthorized
   );
+
+
