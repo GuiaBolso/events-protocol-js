@@ -3,9 +3,9 @@ import { getUUID, getSessionUUID } from "../utils/uuid";
 export const SUCCESS = 2;
 
 export class Event {
-  name: string = "";
+  name = "";
 
-  version: number = 0;
+  version = 0;
 
   payload: any = "";
 
@@ -15,9 +15,9 @@ export class Event {
 
   identity?: any = null;
 
-  flowId: string = "";
+  flowId = "";
 
-  id: string = "";
+  id = "";
 }
 
 type Auth = {
@@ -199,16 +199,24 @@ export const handleAuth = (tokenKey: string) => (
 };
 
 export const createEvent = (
-  { name, version, payload, auth, metadata, identity, id = getUUID(), flowId = getUUID() }: Event,
-  config: any = {},
+  {
+    name,
+    version,
+    payload,
+    auth,
+    metadata,
+    identity,
+    id = getUUID(),
+    flowId = getUUID()
+  }: Event,
+  config: any = {}
 ): Event => {
-
   const baseConfig = {
     uuidResolver: getUUID,
     localUuidResolver: getSessionUUID,
     dateResolver: (): Date => new Date(),
     ...config
-  }
+  };
 
   if (!metadata || !metadata.origin || metadata.origin === DEFAULT_ORIGIN) {
     console.info("Your application should use its name as metadata.origin");
@@ -316,5 +324,3 @@ export const generateFetchEventByName = (
     }),
     isAuthorized
   );
-
-

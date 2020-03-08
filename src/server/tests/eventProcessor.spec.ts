@@ -71,7 +71,7 @@ describe("Test event protocol handler", () => {
         
         const rawEvent = {name, version, id, flowId, identity, auth: {}, metadata:{}, payload:{}}
 
-        
+
         
         const expectedPayloadMessage = {
             "code": "NO_EVENT_HANDLER_FOUND",
@@ -198,7 +198,4 @@ describe("Test event protocol handler", () => {
             });
         })
     });
-
-
-
 });

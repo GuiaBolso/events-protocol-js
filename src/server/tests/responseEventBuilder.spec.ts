@@ -23,6 +23,8 @@ describe("Test responseEventBuilder", () => {
         expect(responseEvent.auth).toEqual({});
         expect(responseEvent.metadata).toEqual({});
         expect(responseEvent.identity).toEqual({});
+
+        return
     });
 
     test("Should build response event with payload value when a value is passed in payload argument", () => {
@@ -45,6 +47,8 @@ describe("Test responseEventBuilder", () => {
         expect(responseEvent.auth).toEqual({});
         expect(responseEvent.metadata).toEqual({});
         expect(responseEvent.identity).toEqual({});
+
+        return
     });
 
     test("Should build response event error for each error type with payload value empty when no message is passed", () => {
@@ -71,6 +75,8 @@ describe("Test responseEventBuilder", () => {
             expect(responseEvent.metadata).toEqual({});
             expect(responseEvent.identity).toEqual({});
         })
+
+        return
         
     });
 
@@ -102,6 +108,8 @@ describe("Test responseEventBuilder", () => {
         expect(responseEvent.auth).toEqual({});
         expect(responseEvent.metadata).toEqual({});
         expect(responseEvent.identity).toEqual({});
+        
+        return
     });
 
     test("Should build response event error foventNotFound", () => {
@@ -124,8 +132,6 @@ describe("Test responseEventBuilder", () => {
 
         const responseEvent = buildNoEventHandlerFor(rawEvent)
         
-        console.log(JSON.stringify(responseEvent))
-
         expect(responseEvent.name).toEqual("eventNotFound");
         expect(responseEvent.version).toEqual(version);
         expect(responseEvent.id).toEqual(id);
@@ -134,6 +140,8 @@ describe("Test responseEventBuilder", () => {
         expect(responseEvent.auth).toEqual({});
         expect(responseEvent.metadata).toEqual({});
         expect(responseEvent.identity).toEqual({});
+
+        return
     });
 
     test("Should build response event error for badProtocol", () => {
@@ -155,8 +163,6 @@ describe("Test responseEventBuilder", () => {
 
         const responseEvent = buildBadProtocolFor(rawEvent, "some-missing")
         
-        console.log(JSON.stringify(responseEvent))
-
         expect(responseEvent.name).toEqual("badProtocol");
         expect(responseEvent.version).toEqual(version);
         expect(responseEvent.id).toEqual(id);
@@ -165,5 +171,7 @@ describe("Test responseEventBuilder", () => {
         expect(responseEvent.auth).toEqual({});
         expect(responseEvent.metadata).toEqual({});
         expect(responseEvent.identity).toEqual({});
+
+        return
     });
 });
