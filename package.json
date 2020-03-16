@@ -1,6 +1,6 @@
 {
   "name": "@guiabolsobr/events-protocol",
-  "version": "1.0.0-5",
+  "version": "1.0.0-6",
   "description": "Manipular chamadas do protocolo de eventos",
   "scripts": {
     "lint": "eslint ./src/**/*.ts",

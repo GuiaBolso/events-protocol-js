@@ -297,10 +297,10 @@ export const generateFetchEventByName = (
   payload: any,
   isAuthorized: boolean | undefined = true,
   auth: Auth,
+  origin: string = DEFAULT_ORIGIN,
   parsedEvent: { name: string; version: number } = baseConfig.eventNameParser(
     eventName
-  ),
-  origin: string = DEFAULT_ORIGIN
+  )
 ): any =>
   baseConfig.fetchEventGenerator(baseConfig)(
     baseConfig.eventCreator({
