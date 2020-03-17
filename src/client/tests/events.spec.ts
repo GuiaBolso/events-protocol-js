@@ -11,7 +11,7 @@ const generateMockEvent = (): events.Event => ({
     token: ""
   },
   metadata: {
-    origin: null,
+    origin: "test",
     createdAt: new Date()
   },
   version: 0,
@@ -68,7 +68,7 @@ describe("createEvent", () => {
           myProperty: 10
         },
         metadata: {
-          origin: null,
+          origin: "test",
           createdAt: new Date()
         },
         auth: {
@@ -244,12 +244,15 @@ describe("generateFetchEventByName", () => {
     const result = await events.generateFetchEventByName(config)(
       "event:name:v2",
       payload,
-      true,
-      auth
+      {
+        isAuthorized: true,
+        auth
+      }
     );
 
     expect(eventCreator).toHaveBeenCalledWith({
       name: "event:name",
+      identity: {},
       metadata: { origin: "web" },
       version: 2,
       payload,

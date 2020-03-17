@@ -1,6 +1,6 @@
 {
   "name": "@guiabolsobr/events-protocol",
-  "version": "1.0.0-7",
+  "version": "1.0.0-8-ts",
   "description": "Manipular chamadas do protocolo de eventos",
   "scripts": {
     "lint": "eslint ./src/**/*.ts",
@@ -8,6 +8,7 @@
     "prebuild": "npm run lint && npm run test && rimraf build",
     "build:ts": "cross-env NODE_ENV=production babel ./src --out-dir ./build --ignore ./**/tests --extensions .ts,.tsx",
     "build:copy": "cp -R ./build/* .",
+    "build:tsc": "cross-env NODE_ENV=production tsc --outDir ./",
     "build": "npm run build:ts && npm run build:copy"
   },
   "main": "index.js",

@@ -188,7 +188,7 @@ export const handleAuth = (tokenKey: string) => (
         event.flowId,
         event.id
       );
-    } else if (!event.auth[tokenKey]) {
+    } else if (!event.auth.token) {
       throw new AuthError(
         `Expected ${tokenKey} in auth, but none found`,
         event.flowId,
@@ -218,12 +218,14 @@ export const createEvent = (
     flowId: baseConfig.uuidResolver(),
     id: baseConfig.uuidResolver(),
     auth: {
+      token: null,
       ...auth,
       "x-sid": baseConfig.localUuidResolver(),
       "x-tid": baseConfig.uuidResolver()
     },
     metadata: {
       ...metadata,
+      origin: DEFAULT_ORIGIN,
       createdAt: baseConfig.dateResolver()
     },
     identity: {}
@@ -276,7 +278,7 @@ export const generateFetchEvent = (config: any = {}): Function => (
     },
     body: JSON.stringify(event)
   })
-    .then(response =>
+    .then((response: any) =>
       httpResponseHandler(response, event.flowId || "flowId", event.id || "id")
     )
     .then(jsonParser)
@@ -292,25 +294,26 @@ export const generateFetchEventByName = (
     eventNameParser: parseEventName,
     ...config
   }
-): Function => (
-  eventName: string,
-  payload: any,
-  isAuthorized: boolean | undefined = true,
-  auth: Auth,
-  origin: string = DEFAULT_ORIGIN,
-  parsedEvent: { name: string; version: number } = baseConfig.eventNameParser(
-    eventName
-  )
-): any =>
-  baseConfig.fetchEventGenerator(baseConfig)(
-    baseConfig.eventCreator({
-      name: parsedEvent.name,
-      version: parsedEvent.version,
-      payload,
-      auth,
-      metadata: {
-        origin
-      }
-    }),
-    isAuthorized
-  );
+): Function => (eventName: string, payload: any, confs: any = {}): any => {
+  const conf = {
+    ...confs,
+    metadata: {
+      origin: DEFAULT_ORIGIN
+    },
+    identity: {},
+    isAuthorized: true,
+    auth: {},
+    parsedEvent: baseConfig.eventNameParser(eventName)
+  };
+
+  const event = baseConfig.eventCreator({
+    name: conf.parsedEvent.name,
+    version: conf.parsedEvent.version,
+    payload,
+    auth: conf.auth,
+    metadata: baseConfig.metadata || conf.metadata,
+    identity: baseConfig.identity || conf.identity
+  });
+
+  return baseConfig.fetchEventGenerator(baseConfig)(event, conf.isAuthorized);
+};

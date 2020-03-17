@@ -8,3 +8,5 @@ package-lock.json
 index.js
 /client
 /utils
+d.ts
+js.map
