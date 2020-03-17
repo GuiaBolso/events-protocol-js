@@ -6,7 +6,8 @@ export const getUUID = (): string =>
 const KEY = "__gb_br_sid__";
 
 export const getSessionUUID = (
-  storage: { getItem: Function; setItem: Function } = global.sessionStorage
+  // eslint-disable-next-line no-undef
+  storage: { getItem: Function; setItem: Function } = window.sessionStorage
 ): string =>
   storage.getItem(KEY) ||
   ((): string => {

@@ -1,16 +1,16 @@
 {
   "name": "@guiabolsobr/events-protocol",
-  "version": "1.0.0-6",
+  "version": "1.0.0-7",
   "description": "Manipular chamadas do protocolo de eventos",
   "scripts": {
     "lint": "eslint ./src/**/*.ts",
     "test": "jest --ci",
-    "prebuild": "npm lint & npm test & rimraf build",
+    "prebuild": "npm run lint && npm run test && rimraf build",
     "build:ts": "cross-env NODE_ENV=production babel ./src --out-dir ./build --ignore ./**/tests --extensions .ts,.tsx",
-    "build:copy": "cp ./build/* . -r",
-    "build": "npm run build:ts & npm run build:copy"
+    "build:copy": "cp -R ./build/* .",
+    "build": "npm run build:ts && npm run build:copy"
   },
-  "main": "./index.js",
+  "main": "./build/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GuiaBolso/events-protocol-js.git"

@@ -164,6 +164,7 @@ describe("handleAuth", () => {
 
 describe("generateFetchEvent", () => {
   const fetchResolver = jest.fn(() => Promise.resolve(10));
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const authHandler = jest.fn(() => {});
   const httpResponseHandler = jest.fn(() => Promise.resolve(20));
   const jsonParser = jest.fn(() => Promise.resolve(30));
