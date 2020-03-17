@@ -24,6 +24,7 @@ type Auth = {
   token?: string;
   "x-sid"?: string;
   "x-tid"?: string;
+  userId?: number;
 };
 type Metadata = {
   createdAt?: Date;
