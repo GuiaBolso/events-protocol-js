@@ -10,7 +10,7 @@
     "build:copy": "cp -R ./build/* .",
     "build": "npm run build:ts && npm run build:copy"
   },
-  "main": "./build/index.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GuiaBolso/events-protocol-js.git"

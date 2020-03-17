@@ -5,6 +5,6 @@ bundle
 build
 .vscode
 package-lock.json
-./index.js
+index.js
 /client
 /utils
