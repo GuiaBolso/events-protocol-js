@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createEvent must convert parameters into a serializable event 1`] = `"{\\"name\\":\\"event:name\\",\\"version\\":1,\\"payload\\":{\\"myProperty\\":10},\\"flowId\\":\\"\\",\\"id\\":\\"\\",\\"auth\\":{\\"x-sid\\":0,\\"x-tid\\":0,\\"token\\":\\"fa3w43a4-a342f23r-a34ra34234-3rqrqwfwdf\\"},\\"metadata\\":{\\"origin\\":null,\\"createdAt\\":0},\\"identity\\":{}}"`;
+exports[`createEvent must convert parameters into a serializable event 1`] = `"{\\"name\\":\\"event:name\\",\\"version\\":1,\\"payload\\":{\\"myProperty\\":10},\\"flowId\\":0,\\"id\\":0,\\"auth\\":{\\"token\\":\\"fa3w43a4-a342f23r-a34ra34234-3rqrqwfwdf\\",\\"x-sid\\":0,\\"x-tid\\":0},\\"metadata\\":{\\"origin\\":\\"web\\",\\"createdAt\\":0},\\"identity\\":{}}"`;

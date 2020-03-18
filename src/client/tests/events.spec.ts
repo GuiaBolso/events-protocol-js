@@ -11,7 +11,7 @@ const generateMockEvent = (): events.Event => ({
     token: ""
   },
   metadata: {
-    origin: null,
+    origin: "test",
     createdAt: new Date()
   },
   version: 0,
@@ -68,7 +68,7 @@ describe("createEvent", () => {
           myProperty: 10
         },
         metadata: {
-          origin: null,
+          origin: "test",
           createdAt: new Date()
         },
         auth: {
@@ -164,6 +164,7 @@ describe("handleAuth", () => {
 
 describe("generateFetchEvent", () => {
   const fetchResolver = jest.fn(() => Promise.resolve(10));
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const authHandler = jest.fn(() => {});
   const httpResponseHandler = jest.fn(() => Promise.resolve(20));
   const jsonParser = jest.fn(() => Promise.resolve(30));
@@ -243,12 +244,15 @@ describe("generateFetchEventByName", () => {
     const result = await events.generateFetchEventByName(config)(
       "event:name:v2",
       payload,
-      true,
-      auth
+      {
+        isAuthorized: true,
+        auth
+      }
     );
 
     expect(eventCreator).toHaveBeenCalledWith({
       name: "event:name",
+      identity: {},
       metadata: { origin: "web" },
       version: 2,
       payload,
