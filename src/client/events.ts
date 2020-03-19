@@ -296,7 +296,6 @@ export const generateFetchEventByName = (
   }
 ): Function => (eventName: string, payload: any, confs: any = {}): any => {
   const conf = {
-    ...confs,
     metadata: {
       origin: DEFAULT_ORIGIN
     },
@@ -304,6 +303,7 @@ export const generateFetchEventByName = (
     isAuthorized: true,
     auth: {},
     parsedEvent: baseConfig.eventNameParser(eventName)
+    ...confs,
   };
 
   const event = baseConfig.eventCreator({
