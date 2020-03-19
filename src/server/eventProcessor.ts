@@ -6,7 +6,8 @@ import {
   buildNoEventHandlerFor,
   buildBadProtocolFor
 } from "./responseEventBuilder";
-import { AwsXrayInstrument } from "./tracer/awsXrayInstrument";
+import instrumentExecutionOnXray from "./tracer/awsXrayInstrument";
+
 
 export class EventProcessor {
   static eventDiscovery: Map<
@@ -36,7 +37,7 @@ export class EventProcessor {
     const hanldlerFunction = this.eventDiscovery.get(eventKey.join(","));
 
     if (hanldlerFunction) {
-      new AwsXrayInstrument().wrapInstrumentExecutionOnXray(event);
+      instrumentExecutionOnXray(event);
       
       return hanldlerFunction(event)
         .then(event => Promise.resolve(event))

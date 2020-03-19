@@ -1,29 +1,33 @@
-import XRay, { Subsegment } from "aws-xray-sdk";
 import { Event } from "../../client/events";
 
-export class AwsXrayInstrument {
-    
-    wrapInstrumentExecutionOnXray(requestEvent : Event) : void {
 
-        if (!XRay) {
-            console.warn("The dependency aws-xray-sdk is not present")
-            console.warn("Skipping the instrumentation!")
-            return
-        }
-        
-        const currSeg = XRay.getSegment();
-        const subSeg = currSeg.addNewSubsegment(`${requestEvent.name}:V${requestEvent.version}`)
-        this.addAnnotationsRelatedToEvent(requestEvent, subSeg )
-        
-        return;
-
+function resolveXrayDependency() {
+    let XRAY:any;
+    try {
+        XRAY = require("aws-xray-sdk")
+    } catch {
+        XRAY = undefined
     }
-
-    private addAnnotationsRelatedToEvent(requestEvent : Event, subSegment: Subsegment) {
-        
-        subSegment.addAnnotation("EventID", requestEvent.id)
-        subSegment.addAnnotation("FlowID", requestEvent.flowId)
-        subSegment.addAnnotation("UserID", requestEvent.auth.userId || "unknow")
-        XRay.SegmentUtils.setOrigin(requestEvent.metadata.origin || "unknow")
-    }
+    return XRAY
 }
+
+    
+export default function instrumentExecutionOnXray(requestEvent : Event) : void {
+
+    const XRAY = resolveXrayDependency();   
+
+    if (!XRAY) {
+        console.warn("The dependency aws-xray-sdk is not present")
+        console.warn("Skipping the instrumentation!")
+        return
+    }
+
+    const currSeg = XRAY.getSegment();
+    const subSeg = currSeg!.addNewSubsegment(`${requestEvent.name}:V${requestEvent.version}`)
+    subSeg.addAnnotation("EventID", requestEvent.id)
+    subSeg.addAnnotation("FlowID", requestEvent.flowId)
+    subSeg.addAnnotation("UserID", requestEvent.auth.userId || "unknow")
+    XRAY.SegmentUtils.setOrigin(requestEvent.metadata.origin || "unknow")
+        
+    return;
+ }

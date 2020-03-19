@@ -1,7 +1,9 @@
 import { EventProcessor } from "../eventProcessor";
 import { Event, createEvent } from "../../client/events";
 import { buildResponseEventFor, buildResponseEventErrorFor, GenericErrorType } from "../responseEventBuilder";
+//import instrumentExecutionOnXray from "../tracer/awsXrayInstrument";
 
+jest.mock("../tracer/awsXrayInstrument")
 
 //Setup event handler
 const simpleSuccessEventHandler = (event: Event) => {
@@ -17,7 +19,7 @@ EventProcessor.addHandler("event:test:error:for", 2, simpleErrorEventHandler);
 
 describe("Test event protocol handler", () => {
 
-    test("Should return success event handler", () => {
+    test("Should return success event handler", async () => {
         
         const name = "event:test";
         const version = 1;
@@ -39,7 +41,7 @@ describe("Test event protocol handler", () => {
         });
     });
 
-    test("Should return error event response when porcessed function decide to do it", () => {
+    test("Should return error event response when porcessed function decide to do it", async () => {
         
         const name = "event:test:error:for";
         const version = 2;
@@ -61,7 +63,7 @@ describe("Test event protocol handler", () => {
         });
     });
 
-    test("Should return eventNotFound error on event handler when the event name has not been registered", () => {
+    test("Should return eventNotFound error on event handler when the event name has not been registered", async () => {
         
         const name = "event:test:does:not:exist";
         const version = 1;
@@ -93,7 +95,7 @@ describe("Test event protocol handler", () => {
         });
     });
 
-    test("Should return eventNotFound error on event handler when the event version has not been registered", () => {
+    test("Should return eventNotFound error on event handler when the event version has not been registered", async () => {
         
         const name = "teste:evento";
         const version = 2;
@@ -123,7 +125,7 @@ describe("Test event protocol handler", () => {
         });
     });
 
-    test("Should return eventNotFound error on event handler when the event name and version has not been registered", () => {
+    test("Should return eventNotFound error on event handler when the event name and version has not been registered", async () => {
         
         const name = "teste:evento:not:exists";
         const version = 2;
@@ -153,7 +155,7 @@ describe("Test event protocol handler", () => {
         });
     });
     
-    test("Should return badProtocol and property missing on payload when id field is missing", () => {
+    test("Should return badProtocol and property missing on payload when id field is missing", async () => {
         
         const name = "teste:evento";
         const version = 1;
