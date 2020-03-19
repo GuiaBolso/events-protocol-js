@@ -302,8 +302,8 @@ export const generateFetchEventByName = (
     identity: {},
     isAuthorized: true,
     auth: {},
-    parsedEvent: baseConfig.eventNameParser(eventName)
-    ...confs,
+    parsedEvent: baseConfig.eventNameParser(eventName),
+    ...confs
   };
 
   const event = baseConfig.eventCreator({
