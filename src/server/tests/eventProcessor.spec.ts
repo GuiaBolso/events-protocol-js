@@ -72,8 +72,6 @@ describe("Test event protocol handler", () => {
         const identity = JSON.parse("{\"userId\": 1}");
         
         const rawEvent = {name, version, id, flowId, identity, auth: {}, metadata:{}, payload:{}}
-
-
         
         const expectedPayloadMessage = {
             "code": "NO_EVENT_HANDLER_FOUND",
@@ -143,61 +141,67 @@ describe("Test event protocol handler", () => {
             }
         }
         
-        return EventProcessor.processEvent(rawEvent).then((responseEvent: Event) => {
-            expect(responseEvent.name).toEqual("eventNotFound");
-            expect(responseEvent.version).toEqual(version);
-            expect(responseEvent.id).toEqual(id);
-            expect(responseEvent.flowId).toEqual(flowId);
-            expect(responseEvent.identity).toEqual(JSON.parse("{}"));
-            expect(responseEvent.auth).toEqual(JSON.parse("{}"));
-            expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
-            expect(JSON.stringify(responseEvent.payload)).toEqual(JSON.stringify(expectedPayloadMessage));
-        });
+        const responseEvent = await EventProcessor.processEvent(rawEvent)
+        
+        expect(responseEvent.name).toEqual("eventNotFound");
+        expect(responseEvent.version).toEqual(version);
+        expect(responseEvent.id).toEqual(id);
+        expect(responseEvent.flowId).toEqual(flowId);
+        expect(responseEvent.identity).toEqual(JSON.parse("{}"));
+        expect(responseEvent.auth).toEqual(JSON.parse("{}"));
+        expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
+        expect(JSON.stringify(responseEvent.payload)).toEqual(JSON.stringify(expectedPayloadMessage));
+        
     });
     
     test("Should return badProtocol and property missing on payload when id field is missing", async () => {
         
-        const name = "teste:evento";
-        const version = 1;
-        const id = "event-id";
-        const flowId = "event-flowId";
-        const identity = JSON.parse("{\"userId\": 1}");
-        const auth = {}
-        const metadata = {}
-        const payload = {}
-        
-        const completePayload = {name, version, id, flowId, identity, auth, metadata, payload}
+        const completePayload = {
+            "name": "teste:evento", 
+            "version": 1, 
+            "id": "event-id", 
+            "flowId": "event-flowId", 
+            "identity": JSON.parse("{\"userId\": 1}"), 
+            "auth": {}, 
+            "metadata": {}, 
+            "payload": {}
+        }
 
-        Object.keys(completePayload).forEach(key => {
-            if (key == "name") {
+        Object.entries(completePayload).forEach(async completeEntry => {
+            if (completeEntry[0] == "name") {
                 return
             }
-            const objectToTest = {...completePayload}
-            delete objectToTest[key]
+            
+            const objectToTest = completePayload
+            let obj = Object.create(null)
+            Object.entries(objectToTest).forEach(entry => {
+                if (entry[0] != completeEntry[0]) {
+                    obj[entry[0]] = entry[1]
+                    
+                }
+            })
 
             let expectedJsonPayload = <JSON><unknown>{
                 "code": "INVALID_COMMUNICATION_PROTOCOL",
                 "parameters": {
-                    "missingProperty": `${key}`
+                    "missingProperty": `${completeEntry[0]}`
                 }
             }
-
-            const promise = EventProcessor.processEvent(objectToTest)
-
-            Promise.resolve(promise).then((responseEvent: Event) => {
-                expect(responseEvent.name).toEqual("badProtocol");
-                expect(responseEvent.version).toEqual(version);
-                if (key != "id") {
-                    expect(responseEvent.id).toEqual(id);
-                }
-                if (key != "flowId") {
-                    expect(responseEvent.flowId).toEqual(flowId);
-                }
-                expect(responseEvent.identity).toEqual(JSON.parse("{}"));
-                expect(responseEvent.auth).toEqual(JSON.parse("{}"));
-                expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
-                expect(JSON.stringify(responseEvent.payload)).toEqual(JSON.stringify(expectedJsonPayload));
-            });
+            
+            const responseEvent = await EventProcessor.processEvent(obj)
+            expect(responseEvent.name).toEqual("badProtocol");
+            expect(responseEvent.version).toEqual(1);
+            if (completeEntry[0] != "id") {
+                expect(responseEvent.id).toEqual("event-id");
+            }
+            if (completeEntry[0] != "flowId") {
+                expect(responseEvent.flowId).toEqual("event-flowId");
+            }
+            expect(responseEvent.identity).toEqual(JSON.parse("{}"));
+            expect(responseEvent.auth).toEqual(JSON.parse("{}"));
+            expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
+            expect(JSON.stringify(responseEvent.payload)).toEqual(JSON.stringify(expectedJsonPayload));
+            
         })
     });
 });

@@ -8,7 +8,6 @@ import {
 } from "./responseEventBuilder";
 import instrumentExecutionOnXray from "./tracer/awsXrayInstrument";
 
-
 export class EventProcessor {
   static eventDiscovery: Map<
     string,
@@ -38,7 +37,7 @@ export class EventProcessor {
 
     if (hanldlerFunction) {
       instrumentExecutionOnXray(event);
-      
+
       return hanldlerFunction(event)
         .then(event => Promise.resolve(event))
         .catch(() => {

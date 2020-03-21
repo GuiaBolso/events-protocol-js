@@ -23,15 +23,14 @@ describe("Test xray instrumentation",() => {
         //Setup
         const XRAY = require("aws-xray-sdk")
         jest.mock("aws-xray-sdk")
-        const mockedSubSegment = new Subsegment("SubSegmentMocked")
-        const xrayGetSegmentListener = jest.spyOn(XRAY, 'getSegment').mockReturnValue(mockedSubSegment)
+        const mockedSubSegment: Subsegment = new Subsegment("SubSegmentMocked")
         mockedSubSegment.addNewSubsegment = jest.fn().mockReturnValue(new Subsegment("NewSubsegmentMocked"))
-        
+        XRAY.getSegment = jest.fn().mockReturnValue(mockedSubSegment)
         //Execute
         instrumentExecutionOnXray(intoEvent(rawEvent))
         
         //Assert
-        expect(xrayGetSegmentListener).toBeCalled()
+        expect(mockedSubSegment.addNewSubsegment).toBeCalled()
     })
 
     test("When dependency is not found should not call instrumentation", () => {

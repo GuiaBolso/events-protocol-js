@@ -21,7 +21,7 @@ export class Event {
 }
 
 type Auth = {
-  token?: string;
+  token?: string | null;
   "x-sid"?: string;
   "x-tid"?: string;
   userId?: number;
