@@ -267,7 +267,7 @@ export const generateFetchEvent = (config: any = {}): Function => (
 ): Promise<Event> => {
   const {
     hostname = "",
-    noauthURL = `/${UNAUTHORIZED_REQUEST}/`,
+    noauthURL = `${UNAUTHORIZED_REQUEST}`,
     fetchResolver = fetch, //eslint-disable-line
     tokenKey = TOKEN_KEY,
     authHandler = handleAuth(tokenKey),
@@ -307,14 +307,14 @@ export const generateFetchEventByName = (
   }
 ): Function => (eventName: string, payload: any, confs: any = {}): any => {
   const conf = {
-    ...confs,
     metadata: {
       origin: DEFAULT_ORIGIN
     },
     identity: {},
     isAuthorized: true,
     auth: {},
-    parsedEvent: baseConfig.eventNameParser(eventName)
+    parsedEvent: baseConfig.eventNameParser(eventName),
+    ...confs
   };
 
   const event = baseConfig.eventCreator({
