@@ -36,7 +36,10 @@ export class EventProcessor {
     const hanldlerFunction = this.eventDiscovery.get(eventKey.join(","));
 
     if (hanldlerFunction) {
-      const instrumentedFunction = instrumentExecutionOnXray(event);
+      const instrumentedFunction = instrumentExecutionOnXray(
+        event,
+        hanldlerFunction
+      );
 
       return instrumentedFunction
         .then(event => Promise.resolve(event))
