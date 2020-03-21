@@ -1,23 +1,29 @@
 import { EventProcessor } from "../eventProcessor";
-import { Event, createEvent } from "../../client/events";
+import { Event, createEvent, intoEvent } from "../../client/events";
 import { buildResponseEventFor, buildResponseEventErrorFor, GenericErrorType } from "../responseEventBuilder";
-//import instrumentExecutionOnXray from "../tracer/awsXrayInstrument";
+import * as awsXrayInstrument from "../tracer/awsXrayInstrument";
 
 jest.mock("../tracer/awsXrayInstrument")
 
 //Setup event handler
-const simpleSuccessEventHandler = (event: Event) => {
+const mockSimpleSuccessEventHandler = (event: Event) => {
     return Promise.resolve(buildResponseEventFor(event, {"success" : 1}))    
 }
 
-const simpleErrorEventHandler = (event: Event) => {
+const mockSimpleErrorEventHandler = (event: Event) => {
     return Promise.resolve(buildResponseEventErrorFor(event,GenericErrorType))    
 }
 
-EventProcessor.addHandler("event:test", 1, simpleSuccessEventHandler);
-EventProcessor.addHandler("event:test:error:for", 2, simpleErrorEventHandler);
+EventProcessor.addHandler("event:test", 1, mockSimpleSuccessEventHandler);
+EventProcessor.addHandler("event:test:error:for", 2, mockSimpleErrorEventHandler);
 
 describe("Test event protocol handler", () => {
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+        jest.resetModuleRegistry()
+        jest.resetModules()
+    }); 
 
     test("Should return success event handler", async () => {
         
@@ -29,16 +35,19 @@ describe("Test event protocol handler", () => {
         
         const rawEvent = {name, version, id, flowId, identity, auth: {}, metadata:{}, payload:{}}
 
-        return EventProcessor.processEvent(rawEvent).then((responseEvent: Event) => {
-            expect(responseEvent.name).toEqual(name+":response");
-            expect(responseEvent.version).toEqual(version);
-            expect(responseEvent.id).toEqual(id);
-            expect(responseEvent.flowId).toEqual(flowId);
-            expect(responseEvent.identity).toEqual(JSON.parse("{}"));
-            expect(responseEvent.auth).toEqual(JSON.parse("{}"));
-            expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
-            expect(responseEvent.payload).toEqual(JSON.parse("{\"success\": 1}"));
-        });
+        jest.mock("../tracer/awsXrayInstrument")
+        jest.spyOn(awsXrayInstrument, 'default').mockReturnValue(mockSimpleSuccessEventHandler(intoEvent(rawEvent)))
+
+        const responseEvent = await EventProcessor.processEvent(rawEvent)
+        expect(responseEvent.name).toEqual(name+":response");
+        expect(responseEvent.version).toEqual(version);
+        expect(responseEvent.id).toEqual(id);
+        expect(responseEvent.flowId).toEqual(flowId);
+        expect(responseEvent.identity).toEqual(JSON.parse("{}"));
+        expect(responseEvent.auth).toEqual(JSON.parse("{}"));
+        expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
+        expect(responseEvent.payload).toEqual(JSON.parse("{\"success\": 1}"));
+        
     });
 
     test("Should return error event response when porcessed function decide to do it", async () => {
@@ -51,16 +60,19 @@ describe("Test event protocol handler", () => {
         
         const rawEvent = {name, version, id, flowId, identity, auth: {}, metadata:{}, payload:{}}
 
-        return EventProcessor.processEvent(rawEvent).then((responseEvent: Event) => {
-            expect(responseEvent.name).toEqual(name+":error");
-            expect(responseEvent.version).toEqual(version);
-            expect(responseEvent.id).toEqual(id);
-            expect(responseEvent.flowId).toEqual(flowId);
-            expect(responseEvent.identity).toEqual(JSON.parse("{}"));
-            expect(responseEvent.auth).toEqual(JSON.parse("{}"));
-            expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
-            expect(responseEvent.payload).toEqual(JSON.parse("{}"));
-        });
+        jest.mock("../tracer/awsXrayInstrument")
+        jest.spyOn(awsXrayInstrument, 'default').mockReturnValue(mockSimpleErrorEventHandler(intoEvent(rawEvent)))
+
+        const responseEvent = await EventProcessor.processEvent(rawEvent)
+        expect(responseEvent.name).toEqual(name+":error");
+        expect(responseEvent.version).toEqual(version);
+        expect(responseEvent.id).toEqual(id);
+        expect(responseEvent.flowId).toEqual(flowId);
+        expect(responseEvent.identity).toEqual(JSON.parse("{}"));
+        expect(responseEvent.auth).toEqual(JSON.parse("{}"));
+        expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
+        expect(responseEvent.payload).toEqual(JSON.parse("{}"));
+        
     });
 
     test("Should return eventNotFound error on event handler when the event name has not been registered", async () => {
@@ -81,16 +93,16 @@ describe("Test event protocol handler", () => {
             }
         }
         
-        return EventProcessor.processEvent(rawEvent).then((responseEvent: Event) => {
-            expect(responseEvent.name).toEqual("eventNotFound");
-            expect(responseEvent.version).toEqual(version);
-            expect(responseEvent.id).toEqual(id);
-            expect(responseEvent.flowId).toEqual(flowId);
-            expect(responseEvent.identity).toEqual(JSON.parse("{}"));
-            expect(responseEvent.auth).toEqual(JSON.parse("{}"));
-            expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
-            expect(JSON.stringify(responseEvent.payload)).toEqual(JSON.stringify(expectedPayloadMessage));
-        });
+        const responseEvent = await EventProcessor.processEvent(rawEvent)
+        expect(responseEvent.name).toEqual("eventNotFound");
+        expect(responseEvent.version).toEqual(version);
+        expect(responseEvent.id).toEqual(id);
+        expect(responseEvent.flowId).toEqual(flowId);
+        expect(responseEvent.identity).toEqual(JSON.parse("{}"));
+        expect(responseEvent.auth).toEqual(JSON.parse("{}"));
+        expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
+        expect(JSON.stringify(responseEvent.payload)).toEqual(JSON.stringify(expectedPayloadMessage));
+        
     });
 
     test("Should return eventNotFound error on event handler when the event version has not been registered", async () => {
@@ -111,16 +123,16 @@ describe("Test event protocol handler", () => {
             }
         }
         
-        return EventProcessor.processEvent(rawEvent).then((responseEvent: Event) => {
-            expect(responseEvent.name).toEqual("eventNotFound");
-            expect(responseEvent.version).toEqual(version);
-            expect(responseEvent.id).toEqual(id);
-            expect(responseEvent.flowId).toEqual(flowId);
-            expect(responseEvent.identity).toEqual(JSON.parse("{}"));
-            expect(responseEvent.auth).toEqual(JSON.parse("{}"));
-            expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
-            expect(JSON.stringify(responseEvent.payload)).toEqual(JSON.stringify(expectedPayloadMessage));
-        });
+        const responseEvent = await EventProcessor.processEvent(rawEvent)
+        expect(responseEvent.name).toEqual("eventNotFound");
+        expect(responseEvent.version).toEqual(version);
+        expect(responseEvent.id).toEqual(id);
+        expect(responseEvent.flowId).toEqual(flowId);
+        expect(responseEvent.identity).toEqual(JSON.parse("{}"));
+        expect(responseEvent.auth).toEqual(JSON.parse("{}"));
+        expect(responseEvent.metadata).toEqual(JSON.parse("{}"));
+        expect(JSON.stringify(responseEvent.payload)).toEqual(JSON.stringify(expectedPayloadMessage));
+        
     });
 
     test("Should return eventNotFound error on event handler when the event name and version has not been registered", async () => {

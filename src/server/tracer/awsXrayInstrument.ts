@@ -1,7 +1,8 @@
-import { Event } from "../../client/events";
+import { Event, createEvent } from "../../client/events";
+import { buildResponseEventFor } from "../responseEventBuilder";
 
 
-export default function instrumentExecutionOnXray(requestEvent : Event) : void {
+export default function instrumentExecutionOnXray(requestEvent : Event) : Promise<Event> {
 
     let XRAY:any;
     try {
@@ -13,7 +14,7 @@ export default function instrumentExecutionOnXray(requestEvent : Event) : void {
     if (!XRAY) {
         console.warn("The dependency aws-xray-sdk is not present")
         console.warn("Skipping the instrumentation!")
-        return
+        return Promise.resolve(buildResponseEventFor(requestEvent));
     }
 
     const currSeg = XRAY.getSegment();
@@ -36,5 +37,5 @@ export default function instrumentExecutionOnXray(requestEvent : Event) : void {
         XRAY.SegmentUtils.setOrigin("unknow")
     }
         
-    return;
+    return Promise.resolve(buildResponseEventFor(requestEvent));
  }

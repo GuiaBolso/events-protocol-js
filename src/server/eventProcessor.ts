@@ -36,9 +36,9 @@ export class EventProcessor {
     const hanldlerFunction = this.eventDiscovery.get(eventKey.join(","));
 
     if (hanldlerFunction) {
-      instrumentExecutionOnXray(event);
+      const instrumentedFunction = instrumentExecutionOnXray(event);
 
-      return hanldlerFunction(event)
+      return instrumentedFunction
         .then(event => Promise.resolve(event))
         .catch(() => {
           const payloadUnhandledErrorMessage: EventMessage = {
