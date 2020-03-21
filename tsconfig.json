@@ -1,6 +1,6 @@
 {
     "include": ["src/**/*.ts"],
-    "exclude": ["build", "spec.ts", "./node_modules"],
+    "exclude": ["build", "src/**/*.spec.ts", "./node_modules"],
     "compilerOptions": {
         "target": "es5",
         "lib": ["es6", "dom"],

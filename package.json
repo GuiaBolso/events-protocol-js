@@ -6,9 +6,9 @@
     "lint": "eslint ./src/**/*.ts",
     "test": "jest --ci",
     "prebuild": "npm run lint && npm run test && rimraf build",
-    "build:ts": "cross-env NODE_ENV=production babel ./src --out-dir ./build --ignore ./**/tests --extensions .ts,.tsx",
+    "build:ts": "cross-env NODE_ENV=production babel src --out-dir lib --ignore \"src/**/*.spec.js\",\"src/**/*.test.js\",\"src/**/*.test.ts\" --extensions .ts,.tsx",
     "build:copy": "cp -R ./build/* .",
-    "build:tsc": "cross-env NODE_ENV=production tsc --outDir ./",
+    "build:tsc": "cross-env NODE_ENV=production tsc --outDir ./lib",
     "build:old": "npm run build:ts && npm run build:copy",
     "build": "npm run build:tsc"
   },
