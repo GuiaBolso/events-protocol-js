@@ -36,6 +36,9 @@ export default function instrumentExecutionOnXray(requestEvent : Event, handlerF
         subSeg.addAnnotation("Origin", "unknow")
         XRAY.SegmentUtils.setOrigin("unknow")
     }
-        
-    return handlerFunction(requestEvent);
+    try {    
+        return handlerFunction(requestEvent);
+    }finally {
+        subSeg.close();
+    }
  }
