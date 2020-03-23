@@ -20,6 +20,10 @@ export const ResourceDenied: EventErrorType = { typeName: "resourceDenied" };
 export const Expired: EventErrorType = { typeName: "expired" };
 export const NoEventFound: EventErrorType = { typeName: "eventNotFound" };
 
+export const UNHANDLED_ERROR_DESCRIPTION = "UNHANDLED_ERROR";
+export const NO_EVENT_HANDLER_FOUND = "NO_EVENT_HANDLER_FOUND";
+export const INVALID_COMMUNICATION_PROTOCOL = "INVALID_COMMUNICATION_PROTOCOL";
+
 export const buildResponseEventFor = (
   event: Event,
   payload: any = {}
@@ -58,9 +62,9 @@ export const buildBadProtocolFor = (
   missingProperty: string
 ): Event => {
   const payloadBadRequestMessage = {
-    code: "INVALID_COMMUNICATION_PROTOCOL",
+    code: INVALID_COMMUNICATION_PROTOCOL,
     parameters: {
-      missingProperty: `${missingProperty}`
+      missingProperty: missingProperty
     }
   };
 
@@ -78,7 +82,7 @@ export const buildBadProtocolFor = (
 
 export const buildNoEventHandlerFor = (event: Event): Event => {
   const payloadNoEventHandlerFoundMessage: EventMessage = {
-    code: "NO_EVENT_HANDLER_FOUND",
+    code: NO_EVENT_HANDLER_FOUND,
     parameters: {
       event: event.name,
       version: event.version

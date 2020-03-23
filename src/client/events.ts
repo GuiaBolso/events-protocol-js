@@ -20,13 +20,12 @@ export class Event {
   id = "";
 }
 
-type Auth = {
+export type Auth = {
   token?: string | null;
   "x-sid"?: string;
   "x-tid"?: string;
-  userId?: number;
 };
-type Metadata = {
+export type Metadata = {
   createdAt?: Date;
   origin?: string;
 };

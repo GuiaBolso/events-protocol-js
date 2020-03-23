@@ -21,9 +21,9 @@ export default function instrumentExecutionOnXray(requestEvent : Event, handlerF
     const subSeg = currSeg!.addNewSubsegment(`${requestEvent.name}:V${requestEvent.version}`)
     subSeg.addAnnotation("EventID", requestEvent.id)
     subSeg.addAnnotation("FlowID", requestEvent.flowId)
-    const reqEventAuth = requestEvent.auth
-    if (reqEventAuth) {
-        subSeg.addAnnotation("UserID", reqEventAuth.userId || "unknow")
+    const reqEventIdentity = requestEvent.identity
+    if (reqEventIdentity) {
+        subSeg.addAnnotation("UserID", reqEventIdentity.userId || "unknow")
     } else {
         subSeg.addAnnotation("UserID", "unknow")
     }

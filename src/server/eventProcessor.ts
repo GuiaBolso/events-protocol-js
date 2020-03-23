@@ -4,7 +4,8 @@ import {
   GenericErrorType,
   EventMessage,
   buildNoEventHandlerFor,
-  buildBadProtocolFor
+  buildBadProtocolFor,
+  UNHANDLED_ERROR_DESCRIPTION
 } from "./responseEventBuilder";
 import instrumentExecutionOnXray from "./tracer/awsXrayInstrument";
 
@@ -42,10 +43,9 @@ export class EventProcessor {
       );
 
       return instrumentedFunction
-        .then(event => Promise.resolve(event))
         .catch(() => {
           const payloadUnhandledErrorMessage: EventMessage = {
-            code: "UNHANDLED_ERROR"
+            code: UNHANDLED_ERROR_DESCRIPTION
           };
           return new Promise<Event>(resolve => {
             resolve(
@@ -65,23 +65,23 @@ export class EventProcessor {
   }
 
   private static validateEvent(rawEvent: any): void {
-    if (rawEvent.version == undefined || rawEvent.version == null) {
+    if (rawEvent.version === undefined || rawEvent.version === null) {
       throw new Error("version");
     }
 
-    if (rawEvent.id == undefined || rawEvent.id == null) {
+    if (rawEvent.id === undefined || rawEvent.id === null) {
       throw new Error("id");
     }
 
-    if (rawEvent.flowId == undefined || rawEvent.flowId == null) {
+    if (rawEvent.flowId === undefined || rawEvent.flowId === null) {
       throw new Error("flowId");
     }
 
-    if (rawEvent.payload == undefined || rawEvent.payload == null) {
+    if (rawEvent.payload === undefined || rawEvent.payload === null) {
       throw new Error("payload");
     }
 
-    if (rawEvent.metadata == undefined || rawEvent.metadata == null) {
+    if (rawEvent.metadata === undefined || rawEvent.metadata === null) {
       throw new Error("metadata");
     }
 
