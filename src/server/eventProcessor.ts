@@ -28,10 +28,11 @@ export class EventProcessor {
     try {
       this.validateEvent(rawEvent);
     } catch (err) {
-      return new Promise<Event>(resolve => {
-        resolve(buildBadProtocolFor(rawEvent, err.message as string));
-      });
+      return Promise.resolve(
+        buildBadProtocolFor(rawEvent, err.message as string)
+      );
     }
+
     const event: Event = intoEvent(rawEvent);
     const eventKey: [string, number] = [event.name, event.version];
     const hanldlerFunction = this.eventDiscovery.get(eventKey.join(","));
@@ -42,25 +43,20 @@ export class EventProcessor {
         hanldlerFunction
       );
 
-      return instrumentedFunction
-        .catch(() => {
-          const payloadUnhandledErrorMessage: EventMessage = {
-            code: UNHANDLED_ERROR_DESCRIPTION
-          };
-          return new Promise<Event>(resolve => {
-            resolve(
-              buildResponseEventErrorFor(
-                event,
-                GenericErrorType,
-                payloadUnhandledErrorMessage
-              )
-            );
-          });
-        });
-    } else {
-      return new Promise<Event>(resolve => {
-        resolve(buildNoEventHandlerFor(event));
+      return instrumentedFunction.catch(() => {
+        const payloadUnhandledErrorMessage: EventMessage = {
+          code: UNHANDLED_ERROR_DESCRIPTION
+        };
+        return Promise.resolve(
+          buildResponseEventErrorFor(
+            event,
+            GenericErrorType,
+            payloadUnhandledErrorMessage
+          )
+        );
       });
+    } else {
+      return Promise.resolve(buildNoEventHandlerFor(event));
     }
   }
 
@@ -85,11 +81,11 @@ export class EventProcessor {
       throw new Error("metadata");
     }
 
-    if (rawEvent.auth == undefined || rawEvent.auth == null) {
+    if (rawEvent.auth === undefined || rawEvent.auth === null) {
       throw new Error("auth");
     }
 
-    if (rawEvent.identity == undefined || rawEvent.identity == null) {
+    if (rawEvent.identity === undefined || rawEvent.identity === null) {
       throw new Error("identity");
     }
   }

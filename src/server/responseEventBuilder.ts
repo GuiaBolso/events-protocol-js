@@ -10,6 +10,25 @@ export type EventMessage = {
   parameters?: any;
 };
 
+function buildResponseEvent(
+  name: string,
+  version: number,
+  payload: {},
+  id: string = getUUID(),
+  flowId: string = getUUID()
+): Event {
+  return {
+    name: name,
+    version: version,
+    payload: payload,
+    id: id,
+    flowId: flowId,
+    identity: {},
+    metadata: {},
+    auth: {}
+  };
+}
+
 export const GenericErrorType: EventErrorType = { typeName: "error" };
 export const BadRequest: EventErrorType = { typeName: "badRequest" };
 export const Unauthorized: EventErrorType = { typeName: "unauthorized" };
@@ -23,21 +42,27 @@ export const NoEventFound: EventErrorType = { typeName: "eventNotFound" };
 export const UNHANDLED_ERROR_DESCRIPTION = "UNHANDLED_ERROR";
 export const NO_EVENT_HANDLER_FOUND = "NO_EVENT_HANDLER_FOUND";
 export const INVALID_COMMUNICATION_PROTOCOL = "INVALID_COMMUNICATION_PROTOCOL";
+const EVENT_NOT_FOUND_NAME = "eventNotFound";
+const BAD_PROTOCOL_NAME = "badProtocol";
+
+function buildPayloadError(code: string, parameters: {}): EventMessage {
+  return {
+    code,
+    parameters
+  };
+}
 
 export const buildResponseEventFor = (
   event: Event,
   payload: any = {}
 ): Event => {
-  return {
-    name: event.name + ":response",
-    version: event.version,
-    payload: payload,
-    metadata: {},
-    auth: {},
-    flowId: event.flowId,
-    id: event.id,
-    identity: {}
-  };
+  return buildResponseEvent(
+    `${event.name}:response`,
+    event.version,
+    payload,
+    event.id,
+    event.flowId
+  );
 };
 
 export const buildResponseEventErrorFor = (
@@ -45,58 +70,41 @@ export const buildResponseEventErrorFor = (
   errorType: EventErrorType,
   message?: EventMessage
 ): Event => {
-  return {
-    name: `${event.name}:${errorType.typeName}`,
-    version: event.version,
-    metadata: {},
-    auth: {},
-    flowId: event.flowId,
-    id: event.id,
-    identity: {},
-    payload: message || {}
-  };
+  return buildResponseEvent(
+    `${event.name}:${errorType.typeName}`,
+    event.version,
+    message || {},
+    event.id,
+    event.flowId
+  );
 };
 
 export const buildBadProtocolFor = (
   event: any,
   missingProperty: string
 ): Event => {
-  const payloadBadRequestMessage = {
-    code: INVALID_COMMUNICATION_PROTOCOL,
-    parameters: {
-      missingProperty: missingProperty
-    }
+  const parameters = {
+    missingProperty
   };
 
-  return {
-    name: "badProtocol",
-    version: event.version || 1,
-    metadata: {},
-    auth: {},
-    flowId: event.flowId || getUUID(),
-    id: event.id || getUUID(),
-    identity: {},
-    payload: payloadBadRequestMessage
-  };
+  return buildResponseEvent(
+    BAD_PROTOCOL_NAME,
+    event.version || 1,
+    buildPayloadError(INVALID_COMMUNICATION_PROTOCOL, parameters),
+    event.id,
+    event.flowId
+  );
 };
 
 export const buildNoEventHandlerFor = (event: Event): Event => {
-  const payloadNoEventHandlerFoundMessage: EventMessage = {
-    code: NO_EVENT_HANDLER_FOUND,
-    parameters: {
+  return buildResponseEvent(
+    EVENT_NOT_FOUND_NAME,
+    event.version,
+    buildPayloadError(NO_EVENT_HANDLER_FOUND, {
       event: event.name,
       version: event.version
-    }
-  };
-
-  return {
-    name: "eventNotFound",
-    version: event.version,
-    metadata: event.metadata,
-    auth: {},
-    flowId: event.flowId,
-    id: event.id,
-    identity: {},
-    payload: payloadNoEventHandlerFoundMessage
-  };
+    }),
+    event.id,
+    event.flowId
+  );
 };

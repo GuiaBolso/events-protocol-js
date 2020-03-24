@@ -23,6 +23,8 @@ describe("Test event protocol handler", () => {
         jest.resetAllMocks()
         jest.resetModuleRegistry()
         jest.resetModules()
+
+        jest.mock("../tracer/awsXrayInstrument")
     }); 
 
     test("Should return success event handler", async () => {
@@ -34,8 +36,7 @@ describe("Test event protocol handler", () => {
         const identity = JSON.parse("{\"userId\": 1}");
         
         const rawEvent = {name, version, id, flowId, identity, auth: {}, metadata:{}, payload:{}}
-
-        jest.mock("../tracer/awsXrayInstrument")
+        
         jest.spyOn(awsXrayInstrument, 'default').mockReturnValue(mockSimpleSuccessEventHandler(intoEvent(rawEvent)))
 
         const responseEvent = await EventProcessor.processEvent(rawEvent)
@@ -60,7 +61,6 @@ describe("Test event protocol handler", () => {
         
         const rawEvent = {name, version, id, flowId, identity, auth: {}, metadata:{}, payload:{}}
 
-        jest.mock("../tracer/awsXrayInstrument")
         jest.spyOn(awsXrayInstrument, 'default').mockReturnValue(mockSimpleErrorEventHandler(intoEvent(rawEvent)))
 
         const responseEvent = await EventProcessor.processEvent(rawEvent)
