@@ -9,7 +9,7 @@
     "build:ts": "cross-env NODE_ENV=production babel src --ignore \"src/**/*.spec.js\",\"src/**/*.test.js\",\"src/**/*.test.ts\" --extensions .ts,.tsx",
     "build:copy": "cp -R ./build/* .",
     "build:legacy": "npm run build:ts && npm run build:copy",
-    "build:tsc": "cross-env NODE_ENV=production tsc ./",
+    "build:tsc": "cross-env NODE_ENV=production tsc --outDir ./",
     "build": "npm run build:tsc"
   },
   "main": "index.js",
