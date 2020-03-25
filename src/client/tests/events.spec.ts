@@ -64,6 +64,8 @@ describe("createEvent", () => {
         ...generateMockEvent(),
         name: "event:name",
         version: 1,
+        flowId: "0",
+        id: "0",
         payload: {
           myProperty: 10
         },
@@ -78,8 +80,8 @@ describe("createEvent", () => {
         }
       },
       {
-        uuidResolver: () => 0,
-        localUuidResolver: () => 0,
+        uuidResolver: () => "0",
+        localUuidResolver: () => "0",
         dateResolver: () => 0
       }
     );

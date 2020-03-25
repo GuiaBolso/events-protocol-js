@@ -219,7 +219,7 @@ export const createEvent = (
   };
 
   if (!metadata || !metadata.origin || metadata.origin === DEFAULT_ORIGIN) {
-    console.info("Your application should use its name as metadata.origin");
+    console.warn("Your application should use its name as metadata.origin");
   }
   return {
     name,

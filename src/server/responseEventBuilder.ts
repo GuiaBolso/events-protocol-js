@@ -44,6 +44,7 @@ export const NO_EVENT_HANDLER_FOUND = "NO_EVENT_HANDLER_FOUND";
 export const INVALID_COMMUNICATION_PROTOCOL = "INVALID_COMMUNICATION_PROTOCOL";
 const EVENT_NOT_FOUND_NAME = "eventNotFound";
 const BAD_PROTOCOL_NAME = "badProtocol";
+const DEFAULT_EVENT_VERSION = 1;
 
 function buildPayloadError(code: string, parameters: {}): EventMessage {
   return {
@@ -89,7 +90,7 @@ export const buildBadProtocolFor = (
 
   return buildResponseEvent(
     BAD_PROTOCOL_NAME,
-    event.version || 1,
+    event.version || DEFAULT_EVENT_VERSION,
     buildPayloadError(INVALID_COMMUNICATION_PROTOCOL, parameters),
     event.id,
     event.flowId
