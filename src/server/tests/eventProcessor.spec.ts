@@ -51,7 +51,7 @@ describe("Test event protocol handler", () => {
         
     });
 
-    test("Should return error event response when porcessed function decide to do it", async () => {
+    test("Should return error event response when processed function decide to do it", async () => {
         
         const name = "event:test:error:for";
         const version = 2;
