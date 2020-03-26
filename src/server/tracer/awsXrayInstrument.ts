@@ -1,5 +1,4 @@
-import { Event, createEvent } from "../../client/events";
-import { buildResponseEventFor } from "../responseEventBuilder";
+import { Event } from "../../client/events";
 
 export default function instrumentExecutionOnXray(
   requestEvent: Event,
@@ -19,7 +18,7 @@ export default function instrumentExecutionOnXray(
   }
 
   const currSeg = XRAY.getSegment();
-  const subSeg = currSeg!.addNewSubsegment(
+  const subSeg = currSeg.addNewSubsegment(
     `${requestEvent.name}:V${requestEvent.version}`
   );
   subSeg.addAnnotation("EventID", requestEvent.id);

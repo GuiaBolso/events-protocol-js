@@ -1,5 +1,5 @@
 import { EventProcessor } from "../eventProcessor";
-import { Event, createEvent, intoEvent } from "../../client/events";
+import { Event, intoEvent } from "../../client/events";
 import {
   buildResponseEventFor,
   buildResponseEventErrorFor,
@@ -10,11 +10,11 @@ import * as awsXrayInstrument from "../tracer/awsXrayInstrument";
 jest.mock("../tracer/awsXrayInstrument");
 
 //Setup event handler
-const mockSimpleSuccessEventHandler = (event: Event) => {
+const mockSimpleSuccessEventHandler = (event: Event): Promise<Event> => {
   return Promise.resolve(buildResponseEventFor(event, { success: 1 }));
 };
 
-const mockSimpleErrorEventHandler = (event: Event) => {
+const mockSimpleErrorEventHandler = (event: Event): Promise<Event> => {
   return Promise.resolve(buildResponseEventErrorFor(event, GenericErrorType));
 };
 
@@ -236,19 +236,19 @@ describe("Test event protocol handler", () => {
       }
 
       const objectToTest = completePayload;
-      let obj = Object.create(null);
+      const obj = Object.create(null);
       Object.entries(objectToTest).forEach(entry => {
         if (entry[0] != completeEntry[0]) {
           obj[entry[0]] = entry[1];
         }
       });
 
-      let expectedJsonPayload = <JSON>(<unknown>{
+      const expectedJsonPayload: any = {
         code: "INVALID_COMMUNICATION_PROTOCOL",
         parameters: {
           missingProperty: `${completeEntry[0]}`
         }
-      });
+      };
 
       const responseEvent = await EventProcessor.processEvent(obj);
       expect(responseEvent.name).toEqual("badProtocol");

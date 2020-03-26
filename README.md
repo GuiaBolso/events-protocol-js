@@ -10,7 +10,7 @@ Esta é uma implementação em javascript que atende aos requisitos do
 A forma mais simples é através do generator `generateFetchEventByName`
 
 ```js
-import client from "@guiabolsobr/events-protocol/client";
+import client from "@guiabolsobr/events-protocol/lib/client";
 
 const generateEvent = client.generateFetchEventByName({
   // configuraçÕes

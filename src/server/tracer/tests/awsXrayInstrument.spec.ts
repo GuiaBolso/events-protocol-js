@@ -1,4 +1,4 @@
-import { Subsegment, getSegment } from "aws-xray-sdk";
+import { Subsegment } from "aws-xray-sdk";
 import instrumentExecutionOnXray from "../awsXrayInstrument";
 import { intoEvent, Event } from "../../../client/events";
 import { buildResponseEventFor } from "../../responseEventBuilder";
@@ -20,7 +20,7 @@ const rawEvent = {
   payload: {}
 };
 
-const mockHandlerFunction = (event: Event) =>
+const mockHandlerFunction = (): Promise<Event> =>
   Promise.resolve(buildResponseEventFor(intoEvent(rawEvent)));
 
 describe("Test xray instrumentation", () => {
@@ -31,7 +31,7 @@ describe("Test xray instrumentation", () => {
 
   test("When dependency is found should call instrumentation", async () => {
     //Setup
-    const XRAY = require("aws-xray-sdk");
+    const XRAY = require("aws-xray-sdk"); // eslint-disable-line
     jest.mock("aws-xray-sdk");
     const mockedSubSegment: Subsegment = new Subsegment("SubSegmentMocked");
     mockedSubSegment.addNewSubsegment = jest

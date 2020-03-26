@@ -14,7 +14,6 @@ import {
   buildNoEventHandlerFor,
   buildBadProtocolFor
 } from "../responseEventBuilder";
-import { stringLiteral } from "@babel/types";
 
 describe("Test responseEventBuilder", () => {
   test("Should build response event with empty payload when no value is passed in payload", () => {
