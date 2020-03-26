@@ -5,9 +5,4 @@ bundle
 build
 .vscode
 package-lock.json
-index.js
-/client
-/utils
-d.ts
-js.map
-/server
+lib

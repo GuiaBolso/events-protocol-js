@@ -1,18 +1,16 @@
 {
   "name": "@guiabolsobr/events-protocol",
-  "version": "1.0.1-00",
+  "version": "1.0.1-0",
   "description": "Manipular chamadas do protocolo de eventos",
   "scripts": {
     "lint": "eslint ./src/**/*.ts",
     "test": "jest --ci",
-    "prebuild": "npm run lint && npm run test && rimraf build",
-    "build:ts": "cross-env NODE_ENV=production babel src --ignore \"src/**/*.spec.js\",\"src/**/*.test.js\",\"src/**/*.test.ts\" --extensions .ts,.tsx",
-    "build:copy": "cp -R ./build/* .",
-    "build:legacy": "npm run build:ts && npm run build:copy",
-    "build:tsc": "cross-env NODE_ENV=production tsc --outDir ./",
+    "prebuild": "npm run lint && npm run test && rimraf lib",
+    "beautify": "prettier .",
+    "build:tsc": "cross-env NODE_ENV=production tsc --outDir ./lib",
     "build": "npm run build:tsc"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GuiaBolso/events-protocol-js.git"
@@ -40,9 +38,15 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-jest": "^23.8.1",
     "eslint-plugin-prettier": "^3.1.2",
+    "husky": "^4.2.3",
     "jest": "^25.1.0",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "typescript": "*"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
