@@ -13,7 +13,7 @@ export class Event {
 
   auth: Auth | null = null;
 
-  identity?: any = null;
+  identity: any = null;
 
   flowId = "";
 

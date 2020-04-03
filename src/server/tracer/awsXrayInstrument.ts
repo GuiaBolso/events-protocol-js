@@ -1,6 +1,4 @@
-import { Event, createEvent } from "../../client/events";
-import { buildResponseEventFor } from "../responseEventBuilder";
-
+import { Event } from "../../client/events";
 
 export default async function instrumentExecutionOnXray(requestEvent : Event, handlerFunction: (event: Event) => Promise<Event>) : Promise<Event> {
 
@@ -21,20 +19,16 @@ export default async function instrumentExecutionOnXray(requestEvent : Event, ha
     const subSeg = currSeg!.addNewSubsegment(`${requestEvent.name}:V${requestEvent.version}`)
     subSeg.addAnnotation("EventID", requestEvent.id)
     subSeg.addAnnotation("FlowID", requestEvent.flowId)
-    const reqEventIdentity = requestEvent.identity
-    if (reqEventIdentity) {
-        subSeg.addAnnotation("UserID", reqEventIdentity.userId || "unknow")
-    } else {
-        subSeg.addAnnotation("UserID", "unknow")
-    }
-
+    const userId = requestEvent.identity.userId ? requestEvent.identity.userId : "unknown"
+    subSeg.addAnnotation("UserID", userId)
+    
     const reqEventMetadata = requestEvent.metadata
     if (reqEventMetadata) {
-        subSeg.addAnnotation("Origin", reqEventMetadata.origin || "unknow")
-        XRAY.SegmentUtils.setOrigin(reqEventMetadata.origin || "unknow")
+        subSeg.addAnnotation("Origin", reqEventMetadata.origin || "unknown")
+        XRAY.SegmentUtils.setOrigin(reqEventMetadata.origin || "unknown")
     } else {
-        subSeg.addAnnotation("Origin", "unknow")
-        XRAY.SegmentUtils.setOrigin("unknow")
+        subSeg.addAnnotation("Origin", "unknown")
+        XRAY.SegmentUtils.setOrigin("unknown")
     }
     try {    
         return await handlerFunction(requestEvent);
