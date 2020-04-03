@@ -19,17 +19,14 @@ export default async function instrumentExecutionOnXray(requestEvent : Event, ha
     const subSeg = currSeg!.addNewSubsegment(`${requestEvent.name}:V${requestEvent.version}`)
     subSeg.addAnnotation("EventID", requestEvent.id)
     subSeg.addAnnotation("FlowID", requestEvent.flowId)
+    
     const userId = requestEvent.identity.userId ? requestEvent.identity.userId : "unknown"
     subSeg.addAnnotation("UserID", userId)
     
-    const reqEventMetadata = requestEvent.metadata
-    if (reqEventMetadata) {
-        subSeg.addAnnotation("Origin", reqEventMetadata.origin || "unknown")
-        XRAY.SegmentUtils.setOrigin(reqEventMetadata.origin || "unknown")
-    } else {
-        subSeg.addAnnotation("Origin", "unknown")
-        XRAY.SegmentUtils.setOrigin("unknown")
-    }
+    const origin = requestEvent.metadata?.origin ? requestEvent.metadata.origin : "unknown"
+    subSeg.addAnnotation("Origin", origin )
+    XRAY.SegmentUtils.setOrigin(origin)
+    
     try {    
         return await handlerFunction(requestEvent);
     }finally {
