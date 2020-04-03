@@ -2,7 +2,7 @@ import { Event, createEvent } from "../../client/events";
 import { buildResponseEventFor } from "../responseEventBuilder";
 
 
-export default function instrumentExecutionOnXray(requestEvent : Event, handlerFunction: (event: Event) => Promise<Event>) : Promise<Event> {
+export default async function instrumentExecutionOnXray(requestEvent : Event, handlerFunction: (event: Event) => Promise<Event>) : Promise<Event> {
 
     let XRAY:any;
     try {
@@ -37,7 +37,7 @@ export default function instrumentExecutionOnXray(requestEvent : Event, handlerF
         XRAY.SegmentUtils.setOrigin("unknow")
     }
     try {    
-        return handlerFunction(requestEvent);
+        return await handlerFunction(requestEvent);
     }finally {
         subSeg.close();
     }
