@@ -1,6 +1,4 @@
-import { Event, createEvent } from "../../client/events";
-import { buildResponseEventFor } from "../responseEventBuilder";
-
+import { Event } from "../../client/events";
 
 export default async function instrumentExecutionOnXray(requestEvent : Event, handlerFunction: (event: Event) => Promise<Event>) : Promise<Event> {
 
