@@ -13,7 +13,7 @@ export class Event {
 
   auth: Auth | null = null;
 
-  identity?: any = null;
+  identity: any = null;
 
   flowId = "";
 
@@ -250,7 +250,7 @@ export const intoEvent = (json: any): Event => ({
   auth: json.auth,
   flowId: json.flowId,
   id: json.id,
-  identity: {}
+  identity: json.identity
 });
 
 export const prepareURL = (

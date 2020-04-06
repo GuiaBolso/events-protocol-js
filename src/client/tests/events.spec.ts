@@ -264,3 +264,22 @@ describe("generateFetchEventByName", () => {
     expect(result).not.toBe(null);
   });
 });
+
+describe("intoEvent test", () => {
+  
+  it("should convert object into", async () => {
+    
+    let jsonEvent = JSON.parse(`{ "name": "evento:teste",   "version": 1,  "id": "some-event-id",  "flowId": "some-flow-id",  "payload": {"somePayload":"someValue"},  "identity": {    "userId": 1  },  "metadata": {    "origin": "aws-console"  },  "auth": {}}`)
+
+    const event = events.intoEvent(jsonEvent);
+
+    expect(event.name).toBe("evento:teste");
+    expect(event.version).toBe(1);
+    expect(event.id).toBe("some-event-id");
+    expect(event.flowId).toBe("some-flow-id");
+    expect(event.payload).toEqual(JSON.parse(`{"somePayload":"someValue"}`));
+    expect(event.identity).toEqual(JSON.parse(`{"userId": 1}`));
+    expect(event.metadata).toEqual(JSON.parse(`{"origin": "aws-console"}`));
+    expect(event.auth).toEqual(JSON.parse("{}"));
+  });
+});
