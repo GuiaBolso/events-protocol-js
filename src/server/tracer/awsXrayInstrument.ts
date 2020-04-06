@@ -6,10 +6,6 @@ export default async function instrumentExecutionOnXray(requestEvent : Event, ha
     try {
         XRAY = require("aws-xray-sdk")
     } catch {
-        XRAY = undefined
-    }
-
-    if (!XRAY) {
         console.warn("The dependency aws-xray-sdk is not present")
         console.warn("Skipping the instrumentation!")
         return handlerFunction(requestEvent);
