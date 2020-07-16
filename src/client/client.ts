@@ -1,4 +1,5 @@
 import {Event} from "client/events";
+import fetch, { Response } from 'node-fetch';
 
 const intoEvent = (json: any): Event => ({
     name: json.name,
@@ -24,8 +25,11 @@ class Success {
 class EventError {
     private event: Event;
 
-    constructor(event: Event) {
+    private typeError: string;
+
+    constructor(event: Event, typeError: string) {
         this.event = event;
+        this.typeError = typeError;
     }
 }
 
@@ -42,8 +46,8 @@ const convertToEvent = (response: Response): Event => {
 }
 
 const convertToEventResponse = (event: Event): EventResponse => {
-    const name = event.name.slice(event.name.lastIndexOf(":") + 1);
-    return name === "response" ? new Success(event) : new EventError(event);
+    const eventNameAppend = event.name.slice(event.name.lastIndexOf(":") + 1);
+    return eventNameAppend === "response" ? new Success(event) : new EventError(event, eventNameAppend);
 }
 
 export default class EventsClient {
