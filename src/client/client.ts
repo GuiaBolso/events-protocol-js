@@ -2,6 +2,7 @@ import {Event} from "client/events";
 import fetch, {Response} from 'cross-fetch';
 import {EventResponse} from "client/response";
 import {HttpError, TimeoutError} from "client/errors";
+import {getErrorType} from "server/responseEventBuilder";
 
 const intoEvent = (json: any): Event => ({
     name: json.name,
@@ -29,11 +30,11 @@ const convertToEvent = (response: Response): Event => {
 
 const convertToEventResponse = (event: Event): EventResponse => {
     const eventNameAppend = event.name.slice(event.name.lastIndexOf(":") + 1);
-    return eventNameAppend === "response" ? {event: event} : {event: event, errorType: "unauthorized"};
+    return eventNameAppend === "response" ? {event: event} : {event: event, errorType: getErrorType(eventNameAppend)};
 }
 
 
-function timeout(event: Event, timeout: number, promise: Promise<Response>): Promise<Response> {
+const timeoutFunc = (event: Event, timeout: number, promise: Promise<Response>): Promise<Response> => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             reject(new TimeoutError(event))
@@ -50,7 +51,7 @@ export default class EventsClient {
     }
 
     sendEvent(event: Event, timeout = 30000): Promise<EventResponse> {
-        return timeout(event, this.timeout, fetch(this.url, {
+        return timeoutFunc(event, timeout, fetch(this.url, {
             method: "POST",
             headers: {
                 "Content-type": "application/json"

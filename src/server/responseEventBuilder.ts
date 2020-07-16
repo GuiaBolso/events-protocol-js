@@ -51,8 +51,21 @@ export type EventErrorType =
     | NoEventFound
     | UnknownErrorType;
 
-function getErrorType(errorType: string): EventErrorType {
-    //TODO:
+export function getErrorType(errorType: string): EventErrorType {
+    switch (errorType) {
+        case "error":
+        case "badRequest":
+        case "unauthorized":
+        case "notFound":
+        case "forbidden":
+        case "userDenied":
+        case "resourceDenied":
+        case "expired":
+        case "eventNotFound":
+            return errorType
+        default:
+            return {typeName: errorType}
+    }
 }
 
 export const UNHANDLED_ERROR_DESCRIPTION = "UNHANDLED_ERROR";
