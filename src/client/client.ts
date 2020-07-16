@@ -12,47 +12,59 @@ export const intoEvent = (json: any): Event => ({
 });
 
 
-class EventsClient {
-    private url: string
+export default class EventsClient {
+    private url: string;
 
     constructor(url: string) {
-        this.url = url
+        this.url = url;
     }
 
     sendEvent(event: Event): Promise<EventResponse> {
         return fetch(this.url, {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(event)
-        }).then(EventsClient.httpResponseHandler)
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(event)
+            })
+            .then(EventsClient.httpResponseHandler)
             .then(EventsClient.convertToEvent)
-            .then()
+            .then(EventsClient.convertToEventResponse)
     }
 
     private static httpResponseHandler(response: Response): Response {
         if (response.status === 200) {
-            return response
+            return response;
         }
-        throw new Error() //TODO: melhorar erro
+        throw new Error(); //TODO: melhorar erro
     }
 
     private static convertToEvent(response: Response): Event {
-        const eventJson = response.json()
-        return intoEvent(eventJson)
+        const eventJson = response.json();
+        return intoEvent(eventJson);
+    }
+
+    private static convertToEventResponse(event: Event): EventResponse {
+        const name = event.name.slice(event.name.lastIndexOf(":") + 1);
+        return name === "response" ? new Success(event) : new EventError(event);
     }
 
 }
 
-type EventResponse = Success | Error
+type EventResponse = Success | EventError;
 
 class Success {
-    event: Event
+    private event: Event;
+
+    constructor(event: Event) {
+        this.event = event;
+    }
 }
 
 class EventError {
-    event: Event
+    private event: Event;
 
-    type: any
+    constructor(event: Event) {
+        this.event = event;
+    }
 }
