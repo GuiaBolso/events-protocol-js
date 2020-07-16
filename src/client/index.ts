@@ -1,4 +1,4 @@
-import * as events from "./events";
-export { default as client } from "./client";
+// import * as events from "./events";
 
-export default events;
+export { default as client } from "./client";
+// export default events;
