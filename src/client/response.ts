@@ -1,12 +1,12 @@
-import {Event} from "client/events";
-import {EventErrorType} from "server/responseEventBuilder";
+import {EventErrorType} from "core/errors";
+import {ResponseEvent} from "core/events"
 
 interface Success {
-    event: Event;
+    event: ResponseEvent;
 }
 
 interface EventError {
-    event: Event;
+    event: ResponseEvent;
     errorType: EventErrorType;
 }
 

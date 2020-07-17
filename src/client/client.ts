@@ -1,10 +1,10 @@
-import {Event} from "client/events";
+import {Event, ResponseEvent} from "core/events";
 import fetch, {Response} from 'cross-fetch';
 import {EventResponse} from "client/response";
 import {HttpError, TimeoutError} from "client/errors";
-import {getErrorType} from "server/responseEventBuilder";
+import {getErrorType} from "core/errors";
 
-const intoEvent = (json: any): Event => ({
+export const intoEvent = (json: any): Event => ({
     name: json.name,
     version: json.version,
     payload: json.payload,
@@ -14,7 +14,6 @@ const intoEvent = (json: any): Event => ({
     id: json.id,
     identity: json.identity
 });
-
 
 const httpResponseHandler = (event: Event) => (response: Response): Response => {
     if (response.status === 200) {
@@ -30,11 +29,16 @@ const convertToEvent = (response: Response): Event => {
 
 const convertToEventResponse = (event: Event): EventResponse => {
     const eventNameAppend = event.name.slice(event.name.lastIndexOf(":") + 1);
-    return eventNameAppend === "response" ? {event: event} : {event: event, errorType: getErrorType(eventNameAppend)};
+    return eventNameAppend === "response"
+        ? {event: new ResponseEvent(event)}
+        : {
+            event: new ResponseEvent(event),
+            errorType: getErrorType(eventNameAppend)
+        };
 }
 
 
-const timeoutFunc = (event: Event, timeout: number, promise: Promise<Response>): Promise<Response> => {
+const timeoutFunc = async (event: Event, timeout: number, promise: Promise<Response>): Promise<Response> => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             reject(new TimeoutError(event))
@@ -50,7 +54,7 @@ export default class EventsClient {
         this.url = url;
     }
 
-    sendEvent(event: Event, timeout = 30000): Promise<EventResponse> {
+    async sendEvent(event: Event, timeout = 30000): Promise<EventResponse> {
         return timeoutFunc(event, timeout, fetch(this.url, {
             method: "POST",
             headers: {

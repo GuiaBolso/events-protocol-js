@@ -1,5 +1,6 @@
-import {Event} from "client/events";
+import {Event} from "core/events";
 import {getUUID} from "utils";
+import {EventErrorType} from "core/errors";
 
 export type EventMessage = {
     code: string;
@@ -25,48 +26,6 @@ function buildResponseEvent(
     };
 }
 
-interface UnknownErrorType {
-    typeName: string;
-}
-
-export type GenericErrorType = "error";
-export type BadRequest = "badRequest";
-export type Unauthorized = "unauthorized";
-export type NotFound = "notFound";
-export type Forbidden = "forbidden";
-export type UserDenied = "userDenied";
-export type ResourceDenied = "resourceDenied";
-export type Expired = "expired";
-export type NoEventFound = "eventNotFound";
-
-export type EventErrorType =
-    GenericErrorType
-    | BadRequest
-    | Unauthorized
-    | NotFound
-    | Forbidden
-    | UserDenied
-    | ResourceDenied
-    | Expired
-    | NoEventFound
-    | UnknownErrorType;
-
-export function getErrorType(errorType: string): EventErrorType {
-    switch (errorType) {
-        case "error":
-        case "badRequest":
-        case "unauthorized":
-        case "notFound":
-        case "forbidden":
-        case "userDenied":
-        case "resourceDenied":
-        case "expired":
-        case "eventNotFound":
-            return errorType
-        default:
-            return {typeName: errorType}
-    }
-}
 
 export const UNHANDLED_ERROR_DESCRIPTION = "UNHANDLED_ERROR";
 export const NO_EVENT_HANDLER_FOUND = "NO_EVENT_HANDLER_FOUND";
