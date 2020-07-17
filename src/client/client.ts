@@ -48,18 +48,38 @@ const timeoutFunc = async (
     });
 };
 
+interface ClientConfig {
+    defaultTimeout: number;
+    fetchHandler: typeof fetch;
+}
+
+interface ParamClientConfig {
+    defaultTimeout?: number;
+    fetchHandler?: typeof fetch;
+}
+
+const BASE_CONFIG: ClientConfig = {
+    defaultTimeout: 30000,
+    fetchHandler: fetch
+};
+
 export default class EventsClient {
     private url: string;
+    private config: ClientConfig;
 
-    constructor(url: string) {
+    constructor(url: string, config: ParamClientConfig = BASE_CONFIG) {
         this.url = url;
+        this.config = { ...BASE_CONFIG, ...config };
     }
 
-    async sendEvent(event: Event, timeout = 30000): Promise<EventResponse> {
+    async sendEvent(
+        event: Event,
+        timeout = this.config.defaultTimeout
+    ): Promise<EventResponse> {
         return timeoutFunc(
             event,
             timeout,
-            fetch(this.url, {
+            this.config.fetchHandler(this.url, {
                 method: "POST",
                 headers: {
                     "Content-type": "application/json"
