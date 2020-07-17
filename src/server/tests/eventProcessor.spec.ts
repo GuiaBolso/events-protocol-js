@@ -1,14 +1,17 @@
-import {EventProcessor} from "../eventProcessor";
-import {Event} from "core/events";
-import {buildResponseEventErrorFor, buildResponseEventFor,} from "../responseEventBuilder";
+import { EventProcessor } from "../eventProcessor";
+import { Event } from "core/events";
+import {
+    buildResponseEventErrorFor,
+    buildResponseEventFor
+} from "../responseEventBuilder";
 import * as awsXrayInstrument from "../tracer/awsXrayInstrument";
-import {intoEvent} from "client/client";
+import { intoEvent } from "client/client";
 
 jest.mock("../tracer/awsXrayInstrument");
 
 //Setup event handler
 const mockSimpleSuccessEventHandler = (event: Event): Promise<Event> => {
-    return Promise.resolve(buildResponseEventFor(event, {success: 1}));
+    return Promise.resolve(buildResponseEventFor(event, { success: 1 }));
 };
 
 const mockSimpleErrorEventHandler = (event: Event): Promise<Event> => {
@@ -49,9 +52,9 @@ describe("Test event protocol handler", () => {
             payload: {}
         };
 
-        jest
-            .spyOn(awsXrayInstrument, "default")
-            .mockReturnValue(mockSimpleSuccessEventHandler(intoEvent(rawEvent)));
+        jest.spyOn(awsXrayInstrument, "default").mockReturnValue(
+            mockSimpleSuccessEventHandler(intoEvent(rawEvent))
+        );
 
         const responseEvent = await EventProcessor.processEvent(rawEvent);
         expect(responseEvent.name).toEqual(name + ":response");
@@ -82,9 +85,9 @@ describe("Test event protocol handler", () => {
             payload: {}
         };
 
-        jest
-            .spyOn(awsXrayInstrument, "default")
-            .mockReturnValue(mockSimpleErrorEventHandler(intoEvent(rawEvent)));
+        jest.spyOn(awsXrayInstrument, "default").mockReturnValue(
+            mockSimpleErrorEventHandler(intoEvent(rawEvent))
+        );
 
         const responseEvent = await EventProcessor.processEvent(rawEvent);
         expect(responseEvent.name).toEqual(name + ":error");

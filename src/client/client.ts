@@ -1,8 +1,8 @@
-import {Event, ResponseEvent} from "core/events";
-import fetch, {Response} from 'cross-fetch';
-import {EventResponse} from "client/response";
-import {HttpError, TimeoutError} from "client/errors";
-import {getErrorType} from "core/errors";
+import { Event, ResponseEvent } from "core/events";
+import fetch, { Response } from "cross-fetch";
+import { EventResponse } from "client/response";
+import { HttpError, TimeoutError } from "client/errors";
+import { getErrorType } from "core/errors";
 
 export const intoEvent = (json: any): Event => ({
     name: json.name,
@@ -15,37 +15,48 @@ export const intoEvent = (json: any): Event => ({
     identity: json.identity
 });
 
-const httpResponseHandler = (event: Event) => (response: Response): Response => {
+const httpResponseHandler = (event: Event) => (
+    response: Response
+): Response => {
     if (response.status === 200) {
         return response;
     }
-    throw new HttpError(response.statusText, response.status, response, event.flowId, event.id);
-}
+    throw new HttpError(
+        response.statusText,
+        response.status,
+        response,
+        event.flowId,
+        event.id
+    );
+};
 
 const convertToEvent = (response: Response): Event => {
     const eventJson = response.json();
     return intoEvent(eventJson);
-}
+};
 
 const convertToEventResponse = (event: Event): EventResponse => {
     const eventNameAppend = event.name.slice(event.name.lastIndexOf(":") + 1);
     return eventNameAppend === "response"
-        ? {event: new ResponseEvent(event)}
+        ? { event: new ResponseEvent(event) }
         : {
-            event: new ResponseEvent(event),
-            errorType: getErrorType(eventNameAppend)
-        };
-}
+              event: new ResponseEvent(event),
+              errorType: getErrorType(eventNameAppend)
+          };
+};
 
-
-const timeoutFunc = async (event: Event, timeout: number, promise: Promise<Response>): Promise<Response> => {
+const timeoutFunc = async (
+    event: Event,
+    timeout: number,
+    promise: Promise<Response>
+): Promise<Response> => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            reject(new TimeoutError(event))
+            reject(new TimeoutError(event));
         }, timeout);
-        promise.then(resolve, reject)
-    })
-}
+        promise.then(resolve, reject);
+    });
+};
 
 export default class EventsClient {
     private url: string;
@@ -55,21 +66,28 @@ export default class EventsClient {
     }
 
     async sendEvent(event: Event, timeout = 30000): Promise<EventResponse> {
-        return timeoutFunc(event, timeout, fetch(this.url, {
-            method: "POST",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(event)
-        }))
+        return timeoutFunc(
+            event,
+            timeout,
+            fetch(this.url, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(event)
+            })
+        )
             .then(httpResponseHandler(event))
             .then(convertToEvent)
             .then(convertToEventResponse)
             .catch((reason: any) => {
-                if (reason instanceof HttpError || reason instanceof TimeoutError) {
-                    return {error: reason.message}
+                if (
+                    reason instanceof HttpError ||
+                    reason instanceof TimeoutError
+                ) {
+                    return { error: reason.message };
                 }
-                return {reason: reason}
-            })
+                return { reason: reason };
+            });
     }
 }

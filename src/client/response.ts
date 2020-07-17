@@ -1,5 +1,5 @@
-import {EventErrorType} from "core/errors";
-import {ResponseEvent} from "core/events"
+import { EventErrorType } from "core/errors";
+import { ResponseEvent } from "core/events";
 
 interface Success {
     event: ResponseEvent;
@@ -18,5 +18,8 @@ interface UnknownError {
     reason: any;
 }
 
-export type EventResponse = Success | EventError | FailedDependency | UnknownError;
-
+export type EventResponse =
+    | Success
+    | EventError
+    | FailedDependency
+    | UnknownError;

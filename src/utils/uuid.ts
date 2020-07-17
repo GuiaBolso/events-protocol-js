@@ -1,6 +1,6 @@
-import {v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from "uuid";
 
-export const getUUID = (): string => uuidv4()
+export const getUUID = (): string => uuidv4();
 
 const KEY = "__gb_br_sid__";
 

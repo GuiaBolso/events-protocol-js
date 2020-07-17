@@ -1,4 +1,4 @@
-import {Event} from "core/events";
+import { Event } from "core/events";
 import {
     buildBadProtocolFor,
     buildNoEventHandlerFor,
@@ -7,11 +7,13 @@ import {
     UNHANDLED_ERROR_DESCRIPTION
 } from "server/responseEventBuilder";
 import instrumentExecutionOnXray from "server/tracer/awsXrayInstrument";
-import {intoEvent} from "client/client";
+import { intoEvent } from "client/client";
 
 export class EventProcessor {
-    static eventDiscovery: Map<string,
-        (event: Event) => Promise<Event>> = new Map<string, (event: Event) => Promise<Event>>();
+    static eventDiscovery: Map<
+        string,
+        (event: Event) => Promise<Event>
+    > = new Map<string, (event: Event) => Promise<Event>>();
 
     static addHandler(
         eventName: string,

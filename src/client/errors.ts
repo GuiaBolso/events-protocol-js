@@ -1,4 +1,4 @@
-import {Event} from "core/events"
+import { Event } from "core/events";
 
 export class HttpError extends Error {
     code: number;
@@ -25,11 +25,10 @@ export class HttpError extends Error {
 }
 
 export class TimeoutError extends Error {
-    event: Event
+    event: Event;
 
     constructor(event: Event) {
         super(`Timeout calling event: ${event.name} version: ${event.version}`);
         this.event = event;
     }
 }
-

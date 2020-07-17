@@ -34,7 +34,7 @@ describe("Test responseEventBuilder", () => {
             identity,
             auth: {},
             metadata: {},
-            payload: {test: "test"}
+            payload: { test: "test" }
         };
 
         const responseEvent = buildResponseEventFor(rawEvent);
@@ -66,7 +66,7 @@ describe("Test responseEventBuilder", () => {
             identity,
             auth: {},
             metadata: {},
-            payload: {test: "test"}
+            payload: { test: "test" }
         };
 
         const responseEvent = buildResponseEventFor(rawEvent, "success");
@@ -98,7 +98,7 @@ describe("Test responseEventBuilder", () => {
             identity,
             auth: {},
             metadata: {},
-            payload: {test: "test"}
+            payload: { test: "test" }
         };
 
         const errors: EventErrorType[] = [
@@ -144,7 +144,7 @@ describe("Test responseEventBuilder", () => {
             identity,
             auth: {},
             metadata: {},
-            payload: {test: "test"}
+            payload: { test: "test" }
         };
 
         const params = new Map<string, any>();
@@ -188,7 +188,7 @@ describe("Test responseEventBuilder", () => {
             identity,
             auth: {},
             metadata: {},
-            payload: {test: "test"}
+            payload: { test: "test" }
         };
 
         const message: EventMessage = {
@@ -228,7 +228,7 @@ describe("Test responseEventBuilder", () => {
             identity,
             auth: {},
             metadata: {},
-            payload: {test: "test"}
+            payload: { test: "test" }
         };
 
         const message: EventMessage = {

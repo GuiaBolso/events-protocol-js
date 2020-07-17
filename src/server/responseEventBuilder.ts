@@ -1,6 +1,6 @@
-import {Event} from "core/events";
-import {getUUID} from "utils";
-import {EventErrorType} from "core/errors";
+import { Event } from "core/events";
+import { getUUID } from "utils";
+import { EventErrorType } from "core/errors";
 
 export type EventMessage = {
     code: string;
@@ -26,14 +26,12 @@ function buildResponseEvent(
     };
 }
 
-
 export const UNHANDLED_ERROR_DESCRIPTION = "UNHANDLED_ERROR";
 export const NO_EVENT_HANDLER_FOUND = "NO_EVENT_HANDLER_FOUND";
 export const INVALID_COMMUNICATION_PROTOCOL = "INVALID_COMMUNICATION_PROTOCOL";
 const EVENT_NOT_FOUND_NAME = "eventNotFound";
 const BAD_PROTOCOL_NAME = "badProtocol";
 const DEFAULT_EVENT_VERSION = 1;
-
 
 function buildPayloadError(code: string, parameters: {}): EventMessage {
     return {

@@ -13,7 +13,7 @@ interface UnknownError {
 }
 
 export type EventErrorType =
-    typeof GenericError
+    | typeof GenericError
     | typeof BadRequest
     | typeof Unauthorized
     | typeof NotFound
@@ -35,8 +35,8 @@ export function getErrorType(errorType: string): EventErrorType {
         case "resourceDenied":
         case "expired":
         case "eventNotFound":
-            return errorType
+            return errorType;
         default:
-            return {typeName: errorType}
+            return { typeName: errorType };
     }
 }

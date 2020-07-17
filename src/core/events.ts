@@ -1,4 +1,4 @@
-import {EventErrorType, getErrorType} from "core/errors";
+import { EventErrorType, getErrorType } from "core/errors";
 
 export interface Event {
     name: string;
@@ -33,28 +33,26 @@ export class ResponseEvent implements Event {
     id: string;
 
     constructor(event: Event) {
-        this.name = event.name
-        this.version = event.version
-        this.id = event.id
-        this.flowId = event.flowId
-        this.payload = event.payload
-        this.identity = event.identity
-        this.auth = event.auth
-        this.metadata = event.metadata
+        this.name = event.name;
+        this.version = event.version;
+        this.id = event.id;
+        this.flowId = event.flowId;
+        this.payload = event.payload;
+        this.identity = event.identity;
+        this.auth = event.auth;
+        this.metadata = event.metadata;
     }
 
-
     isSuccess(): boolean {
-        return this.name.endsWith(":response")
+        return this.name.endsWith(":response");
     }
 
     isError(): boolean {
-        return !this.isSuccess()
+        return !this.isSuccess();
     }
 
     getErrorType(): EventErrorType {
-        if (this.isSuccess()) throw Error("This is not an error event.")
-        return getErrorType(this.name.substring(this.name.lastIndexOf(":")))
+        if (this.isSuccess()) throw Error("This is not an error event.");
+        return getErrorType(this.name.substring(this.name.lastIndexOf(":")));
     }
-
 }
