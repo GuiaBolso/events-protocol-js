@@ -1,4 +1,4 @@
-import {Event} from "client/events";
+import {Event} from "core/events";
 
 export default async function instrumentExecutionOnXray(requestEvent: Event, handlerFunction: (event: Event) => Promise<Event>): Promise<Event> {
 
