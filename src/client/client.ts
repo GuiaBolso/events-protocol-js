@@ -63,7 +63,7 @@ const BASE_CONFIG: ClientConfig = {
     fetchHandler: fetch
 };
 
-export default class EventsClient {
+export class EventsClient {
     private url: string;
     private config: ClientConfig;
 

@@ -1,4 +1,4 @@
-import EventsClient from "client/client";
+import { EventsClient } from "client/client";
 import { getUUID } from "utils";
 import { Event } from "core/events";
 import { isEventError, isFailedDependency, isSuccess } from "client/response";

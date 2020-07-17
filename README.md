@@ -7,28 +7,39 @@ Esta é uma implementação em javascript que atende aos requisitos do
 
 ### Client
 
-A forma mais simples é através do generator `generateFetchEventByName`
+A basta apenas intancia um EventClient e enviar um evento.
 
-```js
-import client from "@guiabolsobr/events-protocol/lib/client";
+```ts
+import EventsClient from "src/client/client";
+import { isSuccess } from "src/client/response";
 
-const generateEvent = client.generateFetchEventByName({
-  // configuraçÕes
-  hostname: "https://minha-url.com/comparador"
+const event = {
+    name: "test:event",
+    version: 1,
+    id: "some-id",
+    flowId: "some-flow-id",
+    payload: { data: "some data here" },
+    identity: {},
+    auth: {},
+    metadata: {}
+};
+
+const client = new EventsClient("https://some.url", {
+    defaultTimeout: 5000
 });
 
-const base = generateEvent(
-  "test:event",
-  {},
-  { isAuthorized: true, auth: { token: "my-token" } }
-);
+const response = client.sendEvent(event);
+if (isSuccess(response)) {
+    const responseEvent = response.event;
+    // faça o que quiser com a resposta do evento aqui
+}
 ```
 
 As configurações mais úteis são
 
 ```js
-hostname = string; // no default
-noauthURL = string; // default /others
+defaultTimeout = 30000;
+fetchHandler = fetch; // fetch function
 ```
 
 ### Servidor
@@ -40,7 +51,7 @@ Exemplo:
 
 ```js
 EventProcessor.addHandler("teste:event", 1, async (event: Event) => {
-  return Promise.resolve(buildResponseEventFor(event));
+    return Promise.resolve(buildResponseEventFor(event));
 });
 ```
 
@@ -55,12 +66,12 @@ A seguir um exemplo completo de uma Aws Lambda Handler completo:
 
 ```js
 EventProcessor.addHandler("teste:event", 1, async (event: Event) => {
-  //seu codigo aqui
-  return Promise.resolve(buildResponseEventFor(event));
+    //seu codigo aqui
+    return Promise.resolve(buildResponseEventFor(event));
 });
 
 exports.handler = (event: any): Promise<Event> => {
-  return EventProcessor.processEvent(event);
+    return EventProcessor.processEvent(event);
 };
 ```
 
