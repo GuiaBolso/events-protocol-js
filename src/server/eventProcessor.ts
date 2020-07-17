@@ -7,7 +7,7 @@ import {
     UNHANDLED_ERROR_DESCRIPTION
 } from "server/responseEventBuilder";
 import instrumentExecutionOnXray from "server/tracer/awsXrayInstrument";
-import { intoEvent } from "client/client";
+import { intoEvent } from "core/utils";
 
 export class EventProcessor {
     static eventDiscovery: Map<

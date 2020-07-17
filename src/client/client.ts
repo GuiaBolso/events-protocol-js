@@ -3,17 +3,7 @@ import fetch, { Response } from "cross-fetch";
 import { EventResponse } from "client/response";
 import { HttpError, TimeoutError } from "client/errors";
 import { getErrorType } from "core/errors";
-
-export const intoEvent = (json: any): Event => ({
-    name: json.name,
-    version: json.version,
-    payload: json.payload,
-    metadata: json.metadata,
-    auth: json.auth,
-    flowId: json.flowId,
-    id: json.id,
-    identity: json.identity
-});
+import { intoEvent } from "core/utils";
 
 const httpResponseHandler = (event: Event) => (
     response: Response
