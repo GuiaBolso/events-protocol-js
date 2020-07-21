@@ -7,7 +7,7 @@ Esta é uma implementação em javascript que atende aos requisitos do
 
 ### Client
 
-A basta apenas intancia um EventClient e enviar um evento.
+Basta apenas intanciar um EventClient e enviar um evento.
 
 ```ts
 import EventsClient from "src/client/client";
@@ -39,7 +39,7 @@ As configurações mais úteis são
 
 ```js
 defaultTimeout = 30000;
-fetchHandler = fetch; // fetch function
+fetchHandler = fetch;
 ```
 
 ### Servidor
