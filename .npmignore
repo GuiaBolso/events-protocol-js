@@ -1,3 +1,6 @@
 src
 build/
 .idea/
+.prettierrc
+.eslintrc
+.babelrc

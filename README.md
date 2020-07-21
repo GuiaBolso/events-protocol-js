@@ -10,7 +10,7 @@ Esta é uma implementação em javascript que atende aos requisitos do
 Basta apenas intanciar um EventClient e enviar um evento.
 
 ```ts
-import EventsClient from "@guiabolsobr/events-protocol/lib/client";
+import { EventsClient } from "@guiabolsobr/events-protocol/client/client";
 import { isSuccess } from "src/client/response";
 
 const event = {
