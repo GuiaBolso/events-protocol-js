@@ -16,7 +16,7 @@ import {
     ResourceDenied,
     Unauthorized,
     UserDenied
-} from "core/errors";
+} from "../../core/errors";
 
 describe("Test responseEventBuilder", () => {
     test("Should build response event with empty payload when no value is passed in payload", () => {

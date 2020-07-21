@@ -1,9 +1,9 @@
-import { Event, ResponseEvent } from "core/events";
+import { Event, ResponseEvent } from "../core/events";
 import fetch, { Response } from "cross-fetch";
-import { EventResponse } from "client/response";
-import { HttpError, TimeoutError } from "client/errors";
-import { getErrorType } from "core/errors";
-import { intoEvent } from "core/utils";
+import { EventResponse } from "./response";
+import { HttpError, TimeoutError } from "./errors";
+import { getErrorType } from "../core/errors";
+import { intoEvent } from "../core/utils";
 
 function httpResponseHandler(event: Event) {
     return (response: Response): Response => {

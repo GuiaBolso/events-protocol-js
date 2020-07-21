@@ -32,6 +32,11 @@ describe("Test EventClient", () => {
         const response = await client.sendEvent(event);
 
         expect(isSuccess(response)).toBeTruthy();
+        if (isSuccess(response)) {
+            const event = response.event;
+
+            expect(event.payload.data).toBe("some data here");
+        }
         done();
     });
     test("event error", async done => {

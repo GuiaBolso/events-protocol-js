@@ -1,4 +1,4 @@
-import { EventErrorType, getErrorType } from "core/errors";
+import { EventErrorType, getErrorType } from "./errors";
 
 export interface Event {
     name: string;

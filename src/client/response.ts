@@ -1,5 +1,5 @@
-import { EventErrorType } from "core/errors";
-import { ResponseEvent } from "core/events";
+import { EventErrorType } from "../core/errors";
+import { ResponseEvent } from "../core/events";
 
 export interface Success {
     event: ResponseEvent;

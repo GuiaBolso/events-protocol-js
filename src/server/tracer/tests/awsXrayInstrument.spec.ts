@@ -1,8 +1,8 @@
 import { Subsegment } from "aws-xray-sdk";
 import instrumentExecutionOnXray from "../awsXrayInstrument";
-import { Event } from "core/events";
+import { Event } from "../../../core/events";
 import { buildResponseEventFor } from "../../responseEventBuilder";
-import { intoEvent } from "core/utils";
+import { intoEvent } from "../../../core/utils";
 
 const name = "event:test";
 const version = 1;

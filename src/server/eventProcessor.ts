@@ -1,13 +1,13 @@
-import { Event } from "core/events";
+import { Event } from "../core/events";
 import {
     buildBadProtocolFor,
     buildNoEventHandlerFor,
     buildResponseEventErrorFor,
     EventMessage,
     UNHANDLED_ERROR_DESCRIPTION
-} from "server/responseEventBuilder";
-import instrumentExecutionOnXray from "server/tracer/awsXrayInstrument";
-import { intoEvent } from "core/utils";
+} from "./responseEventBuilder";
+import instrumentExecutionOnXray from "./tracer/awsXrayInstrument";
+import { intoEvent } from "../core/utils";
 
 export class EventProcessor {
     static eventDiscovery: Map<

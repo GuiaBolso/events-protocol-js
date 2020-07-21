@@ -1,4 +1,4 @@
-import { Event } from "core/events";
+import { Event } from "../core/events";
 
 export class HttpError extends Error {
     code: number;

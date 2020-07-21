@@ -1,4 +1,4 @@
-import { Event } from "core/events";
+import { Event } from "../../core/events";
 
 export default async function instrumentExecutionOnXray(
     requestEvent: Event,

@@ -5,7 +5,7 @@ import {
     buildResponseEventFor
 } from "../responseEventBuilder";
 import * as awsXrayInstrument from "../tracer/awsXrayInstrument";
-import { intoEvent } from "core/utils";
+import { intoEvent } from "../../core/utils";
 
 jest.mock("../tracer/awsXrayInstrument");
 

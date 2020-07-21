@@ -1,4 +1,4 @@
-import { Event } from "core/events";
+import { Event } from "./events";
 
 export const intoEvent = (json: any): Event => ({
     name: json.name,

@@ -1,6 +1,6 @@
-import { Event } from "core/events";
-import { getUUID } from "utils";
-import { EventErrorType } from "core/errors";
+import { Event } from "../core/events";
+import { getUUID } from "../utils";
+import { EventErrorType } from "../core/errors";
 
 export type EventMessage = {
     code: string;
