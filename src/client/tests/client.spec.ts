@@ -23,7 +23,7 @@ describe("Test EventClient", () => {
         };
         const mockFetchPromise = Promise.resolve({
             status: 200,
-            json: () => mockJsonPromise
+            json: async () => mockJsonPromise
         });
         const fetchMock = jest.fn().mockReturnValue(mockFetchPromise);
         const client = new EventsClient("", {
@@ -41,7 +41,7 @@ describe("Test EventClient", () => {
         };
         const mockFetchPromise = Promise.resolve({
             status: 200,
-            json: () => mockJsonPromise
+            json: async () => mockJsonPromise
         });
 
         const fetchMock = jest.fn().mockReturnValue(mockFetchPromise);
@@ -66,7 +66,7 @@ describe("Test EventClient", () => {
         };
         const mockFetchPromise = Promise.resolve({
             status: 200,
-            json: () => mockJsonPromise
+            json: async () => mockJsonPromise
         });
 
         const fetchMock = jest.fn().mockReturnValue(mockFetchPromise);

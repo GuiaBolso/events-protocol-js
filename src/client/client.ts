@@ -5,27 +5,27 @@ import { HttpError, TimeoutError } from "client/errors";
 import { getErrorType } from "core/errors";
 import { intoEvent } from "core/utils";
 
-const httpResponseHandler = (event: Event) => (
-    response: Response
-): Response => {
-    if (response.status === 200) {
-        return response;
-    }
-    throw new HttpError(
-        response.statusText,
-        response.status,
-        response,
-        event.flowId,
-        event.id
-    );
-};
+function httpResponseHandler(event: Event) {
+    return (response: Response): Response => {
+        if (response.status === 200) {
+            return response;
+        }
+        throw new HttpError(
+            response.statusText,
+            response.status,
+            response,
+            event.flowId,
+            event.id
+        );
+    };
+}
 
-const convertToEvent = (response: Response): Event => {
-    const eventJson = response.json();
+async function convertToEvent(response: Response): Promise<Event> {
+    const eventJson = await response.json();
     return intoEvent(eventJson);
-};
+}
 
-const convertToEventResponse = (event: Event): EventResponse => {
+function convertToEventResponse(event: Event): EventResponse {
     const eventNameAppend = event.name.slice(event.name.lastIndexOf(":") + 1);
     return eventNameAppend === "response"
         ? { event: new ResponseEvent(event) }
@@ -33,20 +33,20 @@ const convertToEventResponse = (event: Event): EventResponse => {
               event: new ResponseEvent(event),
               errorType: getErrorType(eventNameAppend)
           };
-};
+}
 
-const timeoutFunc = async (
+async function timeoutFunc(
     event: Event,
     timeout: number,
     promise: Promise<Response>
-): Promise<Response> => {
+): Promise<Response> {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             reject(new TimeoutError(event));
         }, timeout);
         promise.then(resolve, reject);
     });
-};
+}
 
 interface ClientConfig {
     defaultTimeout: number;

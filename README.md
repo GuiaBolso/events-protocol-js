@@ -10,7 +10,7 @@ Esta é uma implementação em javascript que atende aos requisitos do
 Basta apenas intanciar um EventClient e enviar um evento.
 
 ```ts
-import EventsClient from "src/client/client";
+import EventsClient from "@guiabolsobr/events-protocol/lib/client";
 import { isSuccess } from "src/client/response";
 
 const event = {
@@ -28,7 +28,7 @@ const client = new EventsClient("https://some.url", {
     defaultTimeout: 5000
 });
 
-const response = client.sendEvent(event);
+const response = await client.sendEvent(event);
 if (isSuccess(response)) {
     const responseEvent = response.event;
     // faça o que quiser com a resposta do evento aqui
