@@ -51,7 +51,7 @@ Exemplo:
 
 ```js
 EventProcessor.addHandler("teste:event", 1, async (event: Event) => {
-    return Promise.resolve(buildResponseEventFor(event));
+    return buildResponseEventFor(event);
 });
 ```
 
@@ -67,7 +67,7 @@ A seguir um exemplo completo de uma Aws Lambda Handler completo:
 ```js
 EventProcessor.addHandler("teste:event", 1, async (event: Event) => {
     //seu codigo aqui
-    return Promise.resolve(buildResponseEventFor(event));
+    return buildResponseEventFor(event);
 });
 
 exports.handler = (event: any): Promise<Event> => {
