@@ -28,7 +28,7 @@ const client = new EventsClient("https://some.url", {
     defaultTimeout: 5000
 });
 
-const response = client.sendEvent(event);
+const response = await client.sendEvent(event);
 if (isSuccess(response)) {
     const responseEvent = response.event;
     // faça o que quiser com a resposta do evento aqui
@@ -51,7 +51,7 @@ Exemplo:
 
 ```js
 EventProcessor.addHandler("teste:event", 1, async (event: Event) => {
-    return Promise.resolve(buildResponseEventFor(event));
+    return buildResponseEventFor(event);
 });
 ```
 
@@ -67,7 +67,7 @@ A seguir um exemplo completo de uma Aws Lambda Handler completo:
 ```js
 EventProcessor.addHandler("teste:event", 1, async (event: Event) => {
     //seu codigo aqui
-    return Promise.resolve(buildResponseEventFor(event));
+    return buildResponseEventFor(event);
 });
 
 exports.handler = (event: any): Promise<Event> => {
