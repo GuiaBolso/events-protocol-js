@@ -1,17 +1,17 @@
-export const getUUID = (): string =>
-  `${1e7}-${1e3}-${4e3}-${8e3}-${1e11}`.replace(/[018]/g, (a: string): string =>
-    (+a ^ ((Math.random() * 16) >> (+a / 4))).toString(16)
-  );
+import { v4 as uuidv4 } from "uuid";
+
+export const getUUID = (): string => uuidv4();
 
 const KEY = "__gb_br_sid__";
 
+//TODO: não sei como lidar com isso ainda no Client
 export const getSessionUUID = (
-  // eslint-disable-next-line no-undef
-  storage: { getItem: Function; setItem: Function } = window.sessionStorage
+    // eslint-disable-next-line no-undef
+    storage: { getItem: Function; setItem: Function } = window.sessionStorage
 ): string =>
-  storage.getItem(KEY) ||
-  ((): string => {
-    const _sid = getUUID();
-    storage.setItem(KEY, _sid);
-    return _sid;
-  })();
+    storage.getItem(KEY) ||
+    ((): string => {
+        const _sid = getUUID();
+        storage.setItem(KEY, _sid);
+        return _sid;
+    })();

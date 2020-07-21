@@ -1,9 +1,19 @@
 {
-  "include": ["src/**/*.ts"],
-  "exclude": ["build", "src/**/*.spec.ts", "./node_modules"],
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "build",
+    "src/**/*.spec.ts",
+    "./node_modules"
+  ],
   "compilerOptions": {
     "target": "es5",
-    "lib": ["es6", "dom"],
+    "lib": [
+      "es6",
+      "dom"
+    ],
+    "baseUrl": "src",
     "module": "CommonJS",
     "moduleResolution": "node",
     "allowJs": true,
@@ -16,5 +26,7 @@
     "declaration": true,
     "sourceMap": true
   },
-  "type": ["core-js"]
+  "type": [
+    "core-js"
+  ]
 }

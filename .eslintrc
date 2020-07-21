@@ -18,9 +18,12 @@
     "sourceType": "module",
     "legacyDecorators": true
   },
-  "plugins": ["@typescript-eslint", "prettier", "jest"],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "jest"
+  ],
   "rules": {
-    "lines-between-class-members": ["error", "always"],
     "@typescript-eslint/no-explicit-any": 0,
     "prettier/prettier": "error"
   },
