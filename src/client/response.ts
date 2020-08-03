@@ -24,13 +24,13 @@ export type EventResponse =
     | FailedDependency
     | UnknownError;
 
-export function isSuccess(response: EventResponse): response is Success {
-    return (response as Success).event !== undefined;
-}
-
 export function isEventError(response: EventResponse): response is EventError {
     const eventError = response as EventError;
     return eventError.event !== undefined && eventError.errorType !== undefined;
+}
+
+export function isSuccess(response: EventResponse): response is Success {
+    return !isEventError(response);
 }
 
 export function isUnknownError(
