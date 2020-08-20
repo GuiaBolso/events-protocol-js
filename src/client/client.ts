@@ -82,7 +82,7 @@ export class EventsClient {
             this.config.fetchHandler(this.url, {
                 method: "POST",
                 headers: {
-                    "Content-type": "application/json"
+                    "Content-Type": "application/json; charset=UTF-8"
                 },
                 body: JSON.stringify(event)
             })
