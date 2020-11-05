@@ -43,7 +43,8 @@ export class EventProcessor {
                 hanldlerFunction
             );
 
-            return instrumentedFunction.catch(() => {
+            return instrumentedFunction.catch(e => {
+                console.error(e);
                 const payloadUnhandledErrorMessage: EventMessage = {
                     code: UNHANDLED_ERROR_DESCRIPTION
                 };
