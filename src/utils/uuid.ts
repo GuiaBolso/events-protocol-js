@@ -7,7 +7,10 @@ const KEY = "__gb_br_sid__";
 //TODO: não sei como lidar com isso ainda no Client
 export const getSessionUUID = (
     // eslint-disable-next-line no-undef
-    storage: { getItem: Function; setItem: Function } = window.sessionStorage
+    storage: {
+        getItem: (key: string) => string | null;
+        setItem: (key: string, value: any) => void;
+    } = window.sessionStorage
 ): string =>
     storage.getItem(KEY) ||
     ((): string => {

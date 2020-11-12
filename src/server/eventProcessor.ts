@@ -24,7 +24,7 @@ export class EventProcessor {
         this.eventDiscovery.set(eventKey.join(","), handler);
     }
 
-    static processEvent(rawEvent: any): Promise<Event> {
+    static processEvent(rawEvent: Record<string, any>): Promise<Event> {
         try {
             this.validateEvent(rawEvent);
         } catch (err) {

@@ -11,13 +11,13 @@ export interface Event {
     id: string;
 }
 
-interface Auth {
+export interface Auth {
     token?: string | null;
     "x-sid"?: string;
     "x-tid"?: string;
 }
 
-interface Metadata {
+export interface Metadata {
     createdAt?: Date;
     origin?: string;
 }

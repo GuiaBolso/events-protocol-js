@@ -10,7 +10,7 @@ export type EventMessage = {
 function buildResponseEvent(
     name: string,
     version: number,
-    payload: {},
+    payload: Record<string, any>,
     id: string = getUUID(),
     flowId: string = getUUID()
 ): Event {
@@ -33,7 +33,10 @@ const EVENT_NOT_FOUND_NAME = "eventNotFound";
 const BAD_PROTOCOL_NAME = "badProtocol";
 const DEFAULT_EVENT_VERSION = 1;
 
-function buildPayloadError(code: string, parameters: {}): EventMessage {
+function buildPayloadError(
+    code: string,
+    parameters: Record<string, any>
+): EventMessage {
     return {
         code,
         parameters
@@ -68,7 +71,7 @@ export const buildResponseEventErrorFor = (
 };
 
 export const buildBadProtocolFor = (
-    event: any,
+    event: Record<string, any>,
     missingProperty: string
 ): Event => {
     const parameters = {
