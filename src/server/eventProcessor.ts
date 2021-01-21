@@ -46,7 +46,8 @@ export class EventProcessor {
             return instrumentedFunction.catch(e => {
                 console.error(e);
                 const payloadUnhandledErrorMessage: EventMessage = {
-                    code: UNHANDLED_ERROR_DESCRIPTION
+                    code: UNHANDLED_ERROR_DESCRIPTION,
+                    parameters: JSON.stringify(e, Object.getOwnPropertyNames(e))
                 };
                 return Promise.resolve(
                     buildResponseEventErrorFor(
