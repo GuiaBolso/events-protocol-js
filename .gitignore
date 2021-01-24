@@ -7,8 +7,10 @@ build
 package-lock.json
 index.js
 /client
+/core
 /utils
 d.ts
 js.map
 /server
 .idea/
+./index.*

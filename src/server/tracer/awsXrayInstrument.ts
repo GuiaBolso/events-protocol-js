@@ -14,7 +14,7 @@ export default async function instrumentExecutionOnXray(
     }
 
     const currSeg = XRAY.getSegment();
-    const subSeg = currSeg!.addNewSubsegment(
+    const subSeg = currSeg?.addNewSubsegment(
         `${requestEvent.name}:V${requestEvent.version}`
     );
     subSeg.addAnnotation("EventID", requestEvent.id);

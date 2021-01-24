@@ -1,6 +1,6 @@
 import { Event } from "./events";
 
-export const intoEvent = (json: any): Event => ({
+export const intoEvent = (json: Record<string, any>): Event => ({
     name: json.name,
     version: json.version,
     payload: json.payload,
