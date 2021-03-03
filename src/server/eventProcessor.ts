@@ -20,7 +20,7 @@ export class EventProcessor {
         eventVersion: number,
         handler: (event: Event) => Promise<Event>
     ): void {
-        const eventKey: [string, number] = [eventName, eventVersion];
+        const eventKey = [eventName, eventVersion];
         this.eventDiscovery.set(eventKey.join(","), handler);
     }
 
@@ -34,7 +34,7 @@ export class EventProcessor {
         }
 
         const event: Event = intoEvent(rawEvent);
-        const eventKey: [string, number] = [event.name, event.version];
+        const eventKey = [event.name, event.version];
         const hanldlerFunction = this.eventDiscovery.get(eventKey.join(","));
 
         if (hanldlerFunction) {
