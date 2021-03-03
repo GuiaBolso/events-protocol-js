@@ -47,8 +47,12 @@ export class ResponseEvent implements Event {
         return this.name.endsWith(":response");
     }
 
+    isRedirect(): boolean {
+        return this.name.endsWith(":redirect");
+    }
+
     isError(): boolean {
-        return !this.isSuccess();
+        return !this.isSuccess() && !this.isRedirect();
     }
 
     getErrorType(): EventErrorType {
