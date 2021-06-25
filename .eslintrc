@@ -1,31 +1,30 @@
 {
-  "env": {
-    "es6": true,
-    "node": true,
-    "jest": true
-  },
-  "extends": [
-    "prettier",
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module",
-    "legacyDecorators": true
-  },
-  "plugins": [
-    "@typescript-eslint",
-    "prettier",
-    "jest"
-  ],
-  "rules": {
-    "@typescript-eslint/no-explicit-any": 0,
-    "prettier/prettier": "error"
-  },
-  "parser": "@typescript-eslint/parser"
+    "env": {
+        "es6": true,
+        "node": true,
+        "jest": true
+    },
+    "extends": [
+        "prettier",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly",
+        "globalThis": "readonly",
+        "memoryStorage": "readonly"
+    },
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "legacyDecorators": true
+    },
+    "plugins": ["@typescript-eslint", "prettier", "jest"],
+    "rules": {
+        "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/explicit-function-return-type": 0,
+        "prettier/prettier": "error"
+    },
+    "parser": "@typescript-eslint/parser"
 }
