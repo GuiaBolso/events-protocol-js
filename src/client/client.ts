@@ -1,3 +1,5 @@
+import "../utils/storage/globalthis-polyfill";
+
 import { Event, ResponseEvent } from "../core/events";
 import fetch, { Response } from "cross-fetch";
 import { EventResponse } from "./response";
