@@ -12,3 +12,4 @@ d.ts
 js.map
 /server
 .idea/
+.DS_Store
